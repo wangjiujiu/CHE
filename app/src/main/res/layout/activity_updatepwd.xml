@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <com.qc.language.common.view.edittext.ClearEditText
+            android:id="@+id/updatepwd_origin_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_btn_shape"
+            android:hint="原密码"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorBlackText"
+            android:textColorHint="@color/colorBlackText"
+            android:textSize="14sp"/>
+
+
+        <com.qc.language.common.view.edittext.ClearEditText
+            android:id="@+id/updatepwd_new_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:hint="新密码"
+            android:inputType="textPassword"
+            android:background="@drawable/bg_top_half"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorBlackText"
+            android:textColorHint="@color/colorBlackText"
+            android:textSize="14sp"/>
+
+        <com.qc.language.common.view.edittext.ClearEditText
+            android:id="@+id/updatepwd_confirm_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="确认新密码"
+            android:background="@drawable/bg_bottom_half"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorBlackText"
+            android:textColorHint="@color/colorBlackText"
+            android:textSize="14sp"/>
+
+
+
+        <Button
+            android:id="@+id/updatepwd_button"
+            android:layout_width="match_parent"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_height="40dp"
+            style="@style/Button_update"
+            android:text="确定"
+            android:textColor="@android:color/white"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

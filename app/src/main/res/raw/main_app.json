@@ -1,0 +1,142 @@
+[
+  {
+    "name": "听",
+    "data": [
+      {
+        "name": "SST",
+        "imageurl": "sst",
+        "type": "H-SST",
+        "bundlename": "com.qc.language.ui.question.listener.ListenerListActivity"
+      },
+      {
+        "name": "MC-S",
+        "imageurl": "mc_s",
+        "type": "H-MC-S",
+        "bundlename": "com.qc.language.ui.question.listener.ListenerListActivity"
+      },
+      {
+        "name": "MC-M",
+        "imageurl": "mc_m",
+        "type": "H-MC-M",
+        "bundlename": ""
+      },
+      {
+        "name": "FIB-L",
+        "imageurl": "fib_l",
+        "type": "H-FIB-L",
+        "bundlename": ""
+      },
+      {
+        "name": "HCS",
+        "imageurl": "hcs",
+        "type": "H-HCS",
+        "bundlename": ""
+      },
+      {
+        "name": "SMW",
+        "imageurl": "smw",
+        "type": "H-SMW",
+        "bundlename": ""
+      },
+      {
+        "name": "HIW",
+        "imageurl": "hiw",
+        "type": "H-HIW",
+        "bundlename": ""
+      },
+      {
+        "name": "WFD",
+        "imageurl": "wfd",
+        "type": "H-WFD",
+        "bundlename": ""
+      }
+    ]
+  },
+  {
+    "name": "说",
+    "data": [
+      {
+        "name": "RA",
+        "imageurl": "ra",
+        "type": "S-RA",
+        "bundlename": "com.qc.language.ui.question.speak.ra.list.RAListActivity"
+      },
+      {
+        "name": "RS",
+        "imageurl": "rs",
+        "type": "S-RS",
+        "bundlename": "com.qc.language.ui.question.speak.rs.list.RSListActivity"
+      },
+      {
+        "name": "DI",
+        "imageurl": "di",
+        "type": "S-DI",
+        "bundlename": "com.qc.language.ui.question.speak.di.list.DIListActivity"
+      },
+      {
+        "name": "RL",
+        "imageurl": "rl",
+        "type": "S-RL",
+        "bundlename": "com.qc.language.ui.question.speak.rl.list.RlListActivity"
+      },
+      {
+        "name": "ASQ",
+        "imageurl": "asq",
+        "type": "S-ASQ",
+        "bundlename": "com.qc.language.ui.question.speak.asq.list.AsqListActivity"
+      }
+    ]
+  },
+  {
+    "name": "读",
+    "data": [
+      {
+        "name": "MC-S",
+        "imageurl": "rmc_s",
+        "type": "R-MC-S",
+        "bundlename": "com.qc.language.ui.question.read.sar.list.SarListActivity"
+      },
+      {
+        "name": "MA_R",
+        "imageurl": "rmc_m",
+        "type": "R-MC-M",
+        "bundlename": "com.qc.language.ui.question.read.mar.list.MarListActivity"
+      },
+      {
+        "name": "RP",
+        "imageurl": "ro",
+        "type": "R-RO",
+        "bundlename": "com.qc.language.ui.question.read.rp.list.RpListActivity"
+      },
+      {
+        "name": "FIB-R",
+        "imageurl": "fib_r",
+        "type": "R-FIB-R",
+        "bundlename": "com.qc.language.ui.question.read.fibr.list.FibrListActivity"
+      },
+      {
+        "name": "FIB-R&W",
+        "imageurl": "fib_rw",
+        "type": "R-FIB-RW",
+        "bundlename": "com.qc.language.ui.question.read.fibrw.list.FibrwListActivity"
+      }
+    ]
+  },
+  {
+    "name": "写",
+    "data": [
+      {
+        "name": "SWT",
+        "imageurl": "swt",
+        "type": "W-SWT",
+        "bundlename": ""
+      },
+      {
+        "name": "WE",
+        "imageurl": "we",
+        "type": "W-WE",
+        "bundlename": ""
+      }
+    ]
+  }
+]

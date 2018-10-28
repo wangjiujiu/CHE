@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bbn_home_item"
+        android:color="@android:color/white"
+        android:icon="@mipmap/menu_home"
+        android:title="@string/main_bottom_home"/>
+    <item
+        android:id="@+id/bbn_gre_item"
+        android:color="@android:color/white"
+        android:icon="@mipmap/menu_gre"
+        android:title="@string/main_bottom_gre"/>
+    <item
+        android:visible="false"
+        android:id="@+id/bbn_vip_item"
+        android:color="@android:color/white"
+        android:icon="@mipmap/menu_vip"
+        android:title="@string/main_bottom_vip"/>
+    <item
+        android:id="@+id/bbn_center_item"
+        android:color="@android:color/white"
+        android:icon="@mipmap/menu_center"
+        android:title="@string/main_bottom_center"/>
+</menu>

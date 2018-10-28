@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">清澄语言</string>
+
+    <!--tab-->
+    <string name="main_bottom_home">首页</string>
+    <string name="main_bottom_gre">机经</string>
+    <string name="main_bottom_vip">VIP</string>
+    <string name="main_bottom_center">用户中心</string>
+
+    <!--自定义对话框panterdialog-->
+    <string name="dialog_positive">OK</string>
+    <string name="dialog_negative">NO</string>
+    <string name="dialog_positive_single_selection_default">CHOOSE</string>
+    <string name="error_empty_input">You cant leave input field empty</string>
+
+    <!-- 下拉刷新的文本 -->
+    <string name="pull_to_refresh_header_text">下拉可以刷新&#8230;</string>
+    <string name="pull_to_refresh_header_hint_ready">松开即可刷新&#8230;</string>
+
+    <!--上拉加载更多的文本-->
+    <string name="pull_to_refresh_bottom_hint_normal">上拉可以刷新</string>
+    <string name="pull_to_refresh_bottom_hint_onclick">点击加载更多</string>
+    <string name="pull_to_refresh_bottom_no_more_msg">已经到底啦</string>
+
+    <string name="pull_to_refresh_update_time">最后更新时间:</string>
+    <string name="pull_to_refresh_load_more_text">正在努力加载&#8230;</string>
+
+    <!--登录页面-->
+    <string name="login_username">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login_submit">登录</string>
+    <string name="lgoin_username_cannot_empty">用户名不能为空</string>
+    <string name="login_password_cannot_empty">密码不能为空</string>
+    <string name="login_error">登录失败，用户名或密码不对</string>
+
+    <string name="list_web_error">题目列表加载失败:网络错误,请稍后再试</string>
+    <string name="list_data_error">题目列表加载失败:数据出错</string>
+
+    <string name="detail_web_error">题目加载失败:网络错误,请稍后再试</string>
+    <string name="detail_data_error">题目加载失败:数据出错</string>
+</resources>
