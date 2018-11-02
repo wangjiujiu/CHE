@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.qc.language.common.RxPresenter;
 import com.qc.language.service.ApiService;
+import com.qc.language.service.db.data.UserDetails;
 import com.qc.language.service.db.user.CurrentUser;
 import com.qc.language.service.web.WebDataTObject;
 import com.qc.language.ui.main.login.LoginBody;
@@ -53,14 +54,18 @@ public class UpdatePwdPresenter extends RxPresenter<UpdatePwdContract.View> impl
             return;
         }
 
+        if(CurrentUser.getCurrentUser().hasLogin()){
         if(CurrentUser.getCurrentUser().getUserDetails()!=null){
-            String username = CurrentUser.getCurrentUser().getUserDetails().getUsername();
-            String name = CurrentUser.getCurrentUser().getUserDetails().getName();
+            UserDetails userDetails = CurrentUser.getCurrentUser().getUserDetails();
             Map<String,String> headers = new HashMap<String,String>();
             headers.put("Content-Type", "application/json; charset=utf-8");
             UpdatePwdBody updatePwdBody = new UpdatePwdBody();
-            updatePwdBody.setUsername(username);
-            updatePwdBody.setName(name);
+            updatePwdBody.setUsername(userDetails.getUsername());
+            updatePwdBody.setName(userDetails.getName());
+            updatePwdBody.setId(userDetails.getId());
+            updatePwdBody.setCellphone(userDetails.getCellphone());
+            updatePwdBody.setStatus(userDetails.getStatus());
+            updatePwdBody.setEndTime(userDetails.getEndTime());
             updatePwdBody.setPassword(newPwd);
             Subscription rxSubscription = apiService.updatePwd(headers, updatePwdBody)
                     .subscribeOn(Schedulers.io())
@@ -94,6 +99,9 @@ public class UpdatePwdPresenter extends RxPresenter<UpdatePwdContract.View> impl
             addSubscrebe(rxSubscription);
         }
 
+    } else{
+            ToastUtils.showLong("请先登录！");
+    }
     }
 
 }

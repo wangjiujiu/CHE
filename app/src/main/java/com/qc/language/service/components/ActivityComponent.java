@@ -1,39 +1,30 @@
 package com.qc.language.service.components;
 
 import com.qc.language.service.scope.ActivityScope;
-import com.qc.language.ui.question.listener.fibl.HfiblDetailActivity;
-import com.qc.language.ui.question.listener.hcs.HhcsDetailActivity;
-import com.qc.language.ui.question.listener.hiw.HhiwDetailActivity;
-import com.qc.language.ui.question.listener.mcm.HmcmDetailActivity;
-import com.qc.language.ui.question.listener.mcs.HmcsDetailActivity;
-import com.qc.language.ui.question.listener.smw.HsmwDetailActivity;
-import com.qc.language.ui.question.listener.wfd.HwfdDetailActivity;
-import com.qc.language.ui.question.write.swt.WswtDetailActivity;
+import com.qc.language.ui.question.listener.fibl.HfiblDetailFragment;
+import com.qc.language.ui.question.listener.hcs.HhcsDetailFragment;
+import com.qc.language.ui.question.listener.hiw.HhiwDetailFragment;
+import com.qc.language.ui.question.listener.mcm.HmcmDetailFragment;
+import com.qc.language.ui.question.listener.mcs.HmcsDetailFragment;
+import com.qc.language.ui.question.listener.smw.HsmwDetailFragment;
+import com.qc.language.ui.question.listener.sst.HsstDetailFragment;
+import com.qc.language.ui.question.listener.wfd.HwfdDetailFragment;
+import com.qc.language.ui.question.read.fibr.RfibrDetailFragment;
+import com.qc.language.ui.question.read.fibrw.RfibrwDetailFragment;
+import com.qc.language.ui.question.read.mcm.RmcmDetailFragment;
+import com.qc.language.ui.question.read.mcs.RmcsDetailFragment;
+import com.qc.language.ui.question.read.rp.RrpDetailFragment;
+import com.qc.language.ui.question.speak.asq.SAsqDetailFragment;
+import com.qc.language.ui.question.speak.di.SdiDetailFragment;
+import com.qc.language.ui.question.speak.ra.SraDetailFragment;
+import com.qc.language.ui.question.speak.rl.SrlDetailFragment;
+import com.qc.language.ui.question.speak.rs.SrsDetailFragment;
+import com.qc.language.ui.question.write.swt.WswtDetailFragment;
+import com.qc.language.ui.question.write.we.WwfdDetailFragment;
 import com.qc.language.ui.splash.SplashActivity;
 import com.qc.language.ui.center.updatepwd.UpdatePwdActivity;
 import com.qc.language.ui.main.login.UserLoginActivity;
 import com.qc.language.ui.question.listener.ListenerListActivity;
-import com.qc.language.ui.question.listener.sst.HsstDetailActivity;
-import com.qc.language.ui.question.read.fibr.list.FibrDetailActivity;
-import com.qc.language.ui.question.read.fibr.list.FibrListActivity;
-import com.qc.language.ui.question.read.fibrw.list.FibrwDetailActivity;
-import com.qc.language.ui.question.read.fibrw.list.FibrwListActivity;
-import com.qc.language.ui.question.read.mar.list.MarDetailActivity;
-import com.qc.language.ui.question.read.mar.list.MarListActivity;
-import com.qc.language.ui.question.read.rp.list.RpDetailActivity;
-import com.qc.language.ui.question.read.rp.list.RpListActivity;
-import com.qc.language.ui.question.read.sar.list.SarDetailActivity;
-import com.qc.language.ui.question.read.sar.list.SarListActivity;
-import com.qc.language.ui.question.speak.asq.list.AsqDetailActivity;
-import com.qc.language.ui.question.speak.asq.list.AsqListActivity;
-import com.qc.language.ui.question.speak.di.list.DIDetailActivity;
-import com.qc.language.ui.question.speak.di.list.DIListActivity;
-import com.qc.language.ui.question.speak.ra.list.RADetailActivity;
-import com.qc.language.ui.question.speak.ra.list.RAListActivity;
-import com.qc.language.ui.question.speak.rl.list.RlDetailActivity;
-import com.qc.language.ui.question.speak.rl.list.RlListActivity;
-import com.qc.language.ui.question.speak.rs.list.RSDetailActivity;
-import com.qc.language.ui.question.speak.rs.list.RSListActivity;
 
 import dagger.Component;
 
@@ -48,48 +39,35 @@ public interface ActivityComponent {
     UpdatePwdActivity inject(UpdatePwdActivity updatePwdActivity);
     UserLoginActivity inject(UserLoginActivity userLoginActivity);
 
-    RSListActivity inject(RSListActivity rsListActivity);
-    RSDetailActivity inject(RSDetailActivity rsDetailActivity);
 
-    RAListActivity inject(RAListActivity raListActivity);
-    RADetailActivity inject(RADetailActivity raDetailActivity);
-
-    DIListActivity inject(DIListActivity diListActivity);
-    DIDetailActivity inject(DIDetailActivity diDetailActivity);
-
-    RlDetailActivity inject(RlDetailActivity rlDetailActivity);
-    RlListActivity inject(RlListActivity rlListActivity);
-
-    AsqListActivity inject(AsqListActivity asqListActivity);
-    AsqDetailActivity inject(AsqDetailActivity asqDetailActivity);
-
-    SarListActivity inject(SarListActivity sarListActivity);
-    SarDetailActivity inject(SarDetailActivity sarDetailActivity);
-
-    MarListActivity inject(MarListActivity marListActivity);
-    MarDetailActivity inject(MarDetailActivity marDetailActivity);
-
-    RpDetailActivity inject(RpDetailActivity rpDetailActivity);
-    RpListActivity inject(RpListActivity rpListActivity);
-
-    FibrDetailActivity inject(FibrDetailActivity fibrDetailActivity);
-    FibrListActivity inject(FibrListActivity fibrListActivity);
-
-    FibrwDetailActivity inject(FibrwDetailActivity fibrwDetailActivity);
-    FibrwListActivity inject(FibrwListActivity fibrwListActivity);
+    ListenerListActivity inject(ListenerListActivity listenerListActivity);
 
     //听
-    ListenerListActivity inject(ListenerListActivity listenerListActivity);
-    HsstDetailActivity inject(HsstDetailActivity hsstDetailActivity);
-    HmcsDetailActivity inject(HmcsDetailActivity hmcsDetailActivity);
-    HmcmDetailActivity inject(HmcmDetailActivity hmcmDetailActivity);
-    HfiblDetailActivity inject(HfiblDetailActivity hfiblDetailActivity);
-    HsmwDetailActivity inject(HsmwDetailActivity hsmwDetailActivity);
-    HhcsDetailActivity inject(HhcsDetailActivity hhcsDetailActivity);
-    HhiwDetailActivity inject(HhiwDetailActivity hhiwDetailActivity);
-    HwfdDetailActivity inject(HwfdDetailActivity hwfdDetailActivity);
+    HsstDetailFragment inject(HsstDetailFragment hsstDetailFragment);
+    HmcsDetailFragment inject(HmcsDetailFragment hmcsDetailFragment);
+    HmcmDetailFragment inject(HmcmDetailFragment hmcmDetailFragment);
+    HfiblDetailFragment inject(HfiblDetailFragment hfiblDetailFragment);
+    HhcsDetailFragment inject(HhcsDetailFragment hhcsDetailFragment);
+    HsmwDetailFragment inject(HsmwDetailFragment hsmwDetailFragment);
+    HwfdDetailFragment inject(HwfdDetailFragment hwfdDetailFragment);
+    HhiwDetailFragment inject(HhiwDetailFragment hhiwDetailFragment);
+
+    //说
+    SraDetailFragment inject(SraDetailFragment sraDetailFragment);
+    SrsDetailFragment inject(SrsDetailFragment srsDetailFragment);
+    SdiDetailFragment inject(SdiDetailFragment sdiDetailFragment);
+    SrlDetailFragment inject(SrlDetailFragment srlDetailFragment);
+    SAsqDetailFragment inject(SAsqDetailFragment sAsqDetailFragment);
+
+    //读
+    RmcsDetailFragment inject(RmcsDetailFragment rmcsDetailFragment);
+    RmcmDetailFragment inject(RmcmDetailFragment rmcmDetailFragment);
+    RrpDetailFragment  inject(RrpDetailFragment rrpDetailFragment);
+    RfibrDetailFragment inject(RfibrDetailFragment rfibrDetailFragment);
+    RfibrwDetailFragment inject(RfibrwDetailFragment rfibrwDetailFragment);
+
 
     //写
-    WswtDetailActivity inject(WswtDetailActivity wswtDetailActivity);
-
+    WswtDetailFragment inject(WswtDetailFragment wswtDetailFragment);
+    WwfdDetailFragment inject(WwfdDetailFragment wwfdDetailFragment);
 }

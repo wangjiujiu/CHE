@@ -25,6 +25,7 @@ public abstract class DBConstants {
                 .append(DBCurUser.COLUMN_USERNAME).append(" TEXT,")
                 .append(DBCurUser.COLUMN_CELLPHONE).append(" TEXT,")
                 .append(DBCurUser.COLUMN_END_TIME).append(" TEXT,")
+                .append(DBCurUser.COLUMN_USER_ID).append(" TEXT,")
                 .append(DBCurUser.COLUMN_STATUS).append(" TEXT,")
                 .append(DBCurUser.COLUMN_TOKEN).append(" TEXT")
                 .append(")").toString();

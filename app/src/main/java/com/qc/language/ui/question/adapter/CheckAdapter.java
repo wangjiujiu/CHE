@@ -5,12 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.qc.language.R;
-import com.qc.language.ui.question.adapter.data.AnswerData;
+import com.qc.language.ui.question.data.OptionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,9 @@ import java.util.List;
  */
 public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
 
-    private List<AnswerData> items;
+    private List<OptionData> items;
     private List<String> haschooseitems;
+    private String answer;
     private Context context;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -46,6 +48,7 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
         super();
         this.items = new ArrayList<>();
         this.haschooseitems = new ArrayList<>();
+        this.answer = "";
         this.context = context;
     }
 
@@ -65,14 +68,21 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
                 viewHolder.answer.setText(items.get(position).getContent());
             }
 
-            if (haschooseitems.contains(items.get(position).getLetter())&&items.get(position).isRight()) {
+            if(items.get(position).getSeq()!=null&& !StringUtils.isEmpty(items.get(position).getSeq())){
+                viewHolder.num.setText(items.get(position).getSeq());
+            }
+
+            if (haschooseitems.contains(items.get(position).getSeq())&&answer.contains(items.get(position).getSeq())) {
                 //选中是对的
+                viewHolder.pickIv.setImageResource(R.mipmap.ic_right);
                 viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_right));
-            } else if(haschooseitems.contains(items.get(position).getLetter())&&!items.get(position).isRight()){
+            } else if(haschooseitems.contains(items.get(position).getSeq())&&!answer.contains(items.get(position).getSeq())){
                 //选中，但不是对的，选错了
+                viewHolder.pickIv.setImageResource(R.mipmap.ic_error);
                 viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_error));
-            }else if(items.get(position).isRight()){
-                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_error));
+            }else if(answer.contains(items.get(position).getSeq())){
+                viewHolder.pickIv.setImageResource(R.mipmap.ic_unpick);
+                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.picked_unpicked));
             } else{
                 viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
@@ -111,29 +121,35 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView pickIv;
         public TextView answer;
         public TextView num;
         public LinearLayout rootview;
         public ViewHolder(View view) {
             super(view);
+            pickIv = (ImageView) view.findViewById(R.id.check_iv);
             num = (TextView) view.findViewById(R.id.item_pick_num);
             answer = (TextView) view.findViewById(R.id.item_pick_content);
             rootview = (LinearLayout) view.findViewById(R.id.item_pick_rootview);
         }
     }
 
-    public void resetList(List<AnswerData> list) {
+    public void resetList(List<OptionData> list) {
         items.clear();
         items.addAll(list);
     }
 
-    public void resetHasChooseList(List<AnswerData> list) {
+    public void resetHasChooseList(List<OptionData> list) {
         haschooseitems.clear();
         if (list != null && list.size() > 0) {
-            for (AnswerData ob : list) {
-                haschooseitems.add(ob.getLetter());
+            for (OptionData ob : list) {
+                haschooseitems.add(ob.getSeq());
             }
         }
+    }
+
+    public void resetRightAnswer(String  list) {
+      answer = list;
     }
 }
 

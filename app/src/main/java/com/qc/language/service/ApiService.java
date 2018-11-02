@@ -4,9 +4,8 @@ import com.qc.language.service.db.data.UserDetails;
 import com.qc.language.service.web.WebDataTObject;
 import com.qc.language.ui.center.updatepwd.UpdatePwdBody;
 import com.qc.language.ui.main.login.LoginBody;
-import com.qc.language.ui.question.listener.data.HListData;
-import com.qc.language.ui.question.listener.data.HQDetail;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.QListData;
+import com.qc.language.ui.question.data.QDetail;
 
 import java.util.Map;
 
@@ -31,8 +30,8 @@ public interface ApiService {
     Observable<WebDataTObject> updatePwd(@HeaderMap Map<String, String> headers, @Body UpdatePwdBody updatePwdBody);
 
     @GET("exam/loadNums")
-    Observable<HListData> hearList(@Query("role") int role, @Query("type") String type);
+    Observable<QListData> hearList(@Query("role") int role, @Query("type") String type);
 
     @GET("exam/loadDetail")
-    Observable<HQDetail> hearDetail(@Query("id") String id, @Query("type") String type);
+    Observable<QDetail> hearDetail(@Query("id") String id, @Query("type") String type);
 }

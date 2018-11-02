@@ -1,7 +1,7 @@
 package com.qc.language.service.db.question;
 
 import com.qc.language.service.db.DBConstants;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.Question;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class CurrentQuesstion {
     }
 
     
-    public void saveQuestionIdIntoDB(List<HQuestion> messages) {
+    public void saveQuestionIdIntoDB(List<Question> messages) {
         DBConstants.dropQuestion();  //在保存之前，先清除这张表格的数据
         if (this.build.questionRepository != null) {
             this.build.questionRepository.insertQIdIntoDB(messages);
         }
     }
 
-    public List<HQuestion> getQuestionIdFromDB() {
+    public List<Question> getQuestionIdFromDB() {
         if (this.build.questionRepository != null) {
             return this.build.questionRepository.selectIdsFromDB();
         }

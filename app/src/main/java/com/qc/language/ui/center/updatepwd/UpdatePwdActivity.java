@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.qc.language.R;
 import com.qc.language.app.MyApplication;
 import com.qc.language.common.activity.CommonActivity;
@@ -57,6 +60,9 @@ public class UpdatePwdActivity extends CommonActivity implements UpdatePwdContra
         newPwd = (ClearEditText) findViewById(R.id.updatepwd_new_edittext);
         confirmPwd = (ClearEditText) findViewById(R.id.updatepwd_confirm_edittext);
 
+        originPwd.setFilters(new InputFilter[]{new MaxTextLengthFilter(16)});
+        newPwd.setFilters(new InputFilter[]{new MaxTextLengthFilter(16)});
+        confirmPwd.setFilters(new InputFilter[]{new MaxTextLengthFilter(16)});
         submitButton = (Button)findViewById(R.id.updatepwd_button);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +87,36 @@ public class UpdatePwdActivity extends CommonActivity implements UpdatePwdContra
         String newpwd = this.newPwd.getText().toString();
         String confirmpwd = this.confirmPwd.getText().toString();
 
+        if(newpwd.length()<6||confirmpwd.length()<6){
+            ToastUtils.showLong("输入的密码不少于6位");
+        }else{
         updatePwdPresenter.updatePwd(originpwd,newpwd,confirmpwd);
+        }
 
+    }
+
+    public class MaxTextLengthFilter implements InputFilter {
+
+        private int mMaxLength;
+        //构造方法中传入最多能输入的字数
+        public MaxTextLengthFilter(int max) {
+            mMaxLength = max;
+        }
+
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            int keep = mMaxLength - (dest.length() - (dend - dstart));
+            if (keep < (end - start)) {
+                ToastUtils.showShort("最多只能输入" + mMaxLength + "个字");
+            }
+            if (keep <= 0) {
+                return "";
+            } else if (keep >= end - start) {
+                return null;
+            } else {
+                return source.subSequence(start, start + keep);
+            }
+        }
     }
 
 
@@ -99,25 +133,27 @@ public class UpdatePwdActivity extends CommonActivity implements UpdatePwdContra
 
     @Override
     public void updatePwdSuccess(final WebDataTObject updateData) {
-        new PanterDialog(getContext())
-                .setHeaderBackground(R.color.white)
-                .setTitle("提示", 14)
-                .setTitleColor(R.color.colorBlackText)
-                .setMessage("密码修改成功，请点击关闭此页面")
-                .setNegative("取消")
-                .setPositive("确定", new OnDialogClickListener() {
-                    @Override
-                    public void onDialogButtonClicked(PanterDialog dialog) {
-                        //密码修改成功,自动替换存储的密码，下次自动登录
-                        UserDetails userDetails = CurrentUser.getCurrentUser().getUserDetails();
-                        userDetails.setPassword(newPwd.getText().toString());
-                        CurrentUser.getCurrentUser().updateCurrentUser(userDetails);  //新密码
-                        finish();
-                    }
-                })
-                .withAnimation(Animation.SLIDE)
-                .isCancelable(false)
-                .show();
+//        new PanterDialog(getContext())
+//                .setHeaderBackground(R.color.white)
+//                .setTitle("提示", 14)
+//                .setTitleColor(R.color.colorBlackText)
+//                .setMessage("密码修改成功，请点击关闭此页面")
+//                .setNegative("取消")
+//                .setPositive("确定", new OnDialogClickListener() {
+//                    @Override
+//                    public void onDialogButtonClicked(PanterDialog dialog) {
+//                        //密码修改成功,自动替换存储的密码，下次自动登录
+//                        UserDetails userDetails = CurrentUser.getCurrentUser().getUserDetails();
+//                        userDetails.setPassword(newPwd.getText().toString());
+//                        CurrentUser.getCurrentUser().updateCurrentUser(userDetails);  //新密码
+//                        finish();
+//                    }
+//                })
+//                .withAnimation(Animation.SLIDE)
+//                .isCancelable(false)
+//                .show();
+        ToastUtils.showShort("密码修改成功!");
+        finish();
     }
 
 }

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.qc.language.R;
 import com.qc.language.common.fragment.CommonFragment;
+import com.qc.language.service.db.user.CurrentUser;
 import com.qc.language.ui.gre.adapter.AppGridListAdapter;
 import com.qc.language.ui.gre.databean.AppData;
 import com.qc.language.ui.gre.databean.AppGroupData;

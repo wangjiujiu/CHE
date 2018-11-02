@@ -21,6 +21,7 @@ import com.qc.language.ui.gre.GreFragment;
 import com.qc.language.ui.center.CenterFragment;
 import com.qc.language.ui.home.HomeFragment;
 import com.qc.language.ui.main.login.UserLoginActivity;
+import com.qc.language.ui.update.UpdateHelper;
 import com.qc.language.ui.vip.VipFragment;
 import com.qc.language.common.utils.DoubleClickExitHelper;
 import com.qc.language.common.view.bottomnavigationviewex.BottomNavigationViewEx;
@@ -64,6 +65,9 @@ public class UserMainActivity extends CommonActivity{
         setListener();
         bnve.setCurrentItem(0);
         doubleClickExitHelper = new DoubleClickExitHelper(this); // 注册双击退出事件
+
+        //检查更新
+        UpdateHelper.doUpdate(false,this, this);
     }
 
     private void setListener() {

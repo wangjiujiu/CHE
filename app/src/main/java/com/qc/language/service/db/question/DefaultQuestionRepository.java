@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.qc.language.service.db.DB;
 import com.qc.language.service.db.DBQuestion;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.Question;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ public class DefaultQuestionRepository implements QuestionRepository {
 
     //存题号到数据库
     @Override
-    public void insertQIdIntoDB(List<HQuestion> ids) {
+    public void insertQIdIntoDB(List<Question> ids) {
         for (int i = 0; i < ids.size(); i++) {
-            HQuestion hQuestion = ids.get(i);
+            Question hQuestion = ids.get(i);
             ContentValues values = new DBQuestion.Builder()
                     .qid(hQuestion.getId())
                     .type(hQuestion.getType())
@@ -51,7 +51,7 @@ public class DefaultQuestionRepository implements QuestionRepository {
                     + ") " + "values(?,?,?,?)";
             SQLiteStatement stat = db.compileStatement(sql);
             db.beginTransaction();
-            for (HQuestion hQuestion : ids) {
+            for (Question hQuestion : ids) {
                 stat.bindString(1, hQuestion.getId());
                 stat.bindString(2, hQuestion.getTitle());
                 stat.bindString(3, hQuestion.getType());
@@ -74,19 +74,19 @@ public class DefaultQuestionRepository implements QuestionRepository {
 
     //取出所有题目
     @Override
-    public List<HQuestion> selectIdsFromDB() {
+    public List<Question> selectIdsFromDB() {
         Cursor cursor = mDatabase.getReadableDatabase().rawQuery("select * from " + DBQuestion.TABLE_QUESTION, null);
         return convert(cursor);
     }
 
-    private List<HQuestion> convert(Cursor cursor) {
-        List<HQuestion> messages = new ArrayList<>();
+    private List<Question> convert(Cursor cursor) {
+        List<Question> messages = new ArrayList<>();
         if (cursor == null) {
             return null;
         }
         try {
             while (cursor.moveToNext()) {
-                HQuestion hQuestion = new HQuestion();
+                Question hQuestion = new Question();
                 hQuestion.setId(DB.getString(cursor, DBQuestion.COLUMN_QUESTION_ID));
                 hQuestion.setType(DB.getString(cursor, DBQuestion.COLUMN_QUESTION_TYPE));
                 hQuestion.setSeq(DB.getString(cursor, DBQuestion.COLUMN_QUESTION_SEQ));

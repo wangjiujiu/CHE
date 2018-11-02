@@ -4,7 +4,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.qc.language.R;
 import com.qc.language.common.RxPresenter;
 import com.qc.language.service.ApiService;
-import com.qc.language.ui.question.listener.data.HQDetail;
+import com.qc.language.ui.question.data.QDetail;
 
 import javax.inject.Inject;
 
@@ -29,8 +29,8 @@ public class HfiblDetailPresenter extends RxPresenter<HfiblDetailContract.View> 
         Subscription rxSubscription = apiService.hearDetail(id,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HQDetail>() {
-                    @Override public void onNext(HQDetail data) {
+                .subscribe(new Observer<QDetail>() {
+                    @Override public void onNext(QDetail data) {
                         if (data.isSuccess()) {
                             mView.loadSuccess(data);
                         } else {

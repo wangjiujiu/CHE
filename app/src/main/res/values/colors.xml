@@ -32,9 +32,10 @@
     <!--panterdialog-->
 
     <!--单选、多选颜色-->
-    <color name="pick_right">#4fb562</color>
-    <color name="pick_error">#e15554</color>
-    <color name="picked_color">#f1d823</color>
+    <color name="pick_right">#def1dd</color>
+    <color name="pick_error">#f9dfe8</color>
+    <color name="picked_unpicked">#f7f3d2</color>
+    <color name="picked_color">#efe174</color>
 
 
 </resources>

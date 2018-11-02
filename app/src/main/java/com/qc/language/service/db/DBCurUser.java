@@ -12,6 +12,7 @@ public class DBCurUser {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_USER_ID = "userId";
     public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_TOKEN = "token";
@@ -31,6 +32,12 @@ public class DBCurUser {
             values.put(COLUMN_NAME, name);
             return this;
         }
+
+        public Builder userId(String userId) {
+            values.put(COLUMN_USER_ID, userId);
+            return this;
+        }
+
 
         public Builder password(String pwd) {
             values.put(COLUMN_PASSWORD, pwd);

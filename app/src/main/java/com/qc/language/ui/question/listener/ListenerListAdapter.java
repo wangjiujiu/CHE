@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.qc.language.R;
 import com.qc.language.common.view.recyclerview.OnRecyclerViewItemClickListener;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.Question;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class ListenerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
     private OnRecyclerViewItemClickListener listener;
-    private List<HQuestion> items;
+    private List<Question> items;
     private LayoutInflater mLayoutInflater;
     private Context context;
 
@@ -29,7 +29,7 @@ public class ListenerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     /** * 控制空布局的显隐 */
     private int mEmptyType = 0;
 
-    public ListenerListAdapter(Context context, List<HQuestion> items) {
+    public ListenerListAdapter(Context context, List<Question> items) {
         this.items = items;
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -49,7 +49,7 @@ public class ListenerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(final RecyclerView.ViewHolder  holder, final int position) {
         int itemViewType = getItemViewType(position);
         if(EMPTY_VIEW!=itemViewType){
-            final HQuestion item = items.get(position);
+            final Question item = items.get(position);
 
             if(item.getTitle()!=null){
                 ((ItemViewHolder) holder).titleTv.setText(item.getTitle());
@@ -141,13 +141,13 @@ public class ListenerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void resetList(List<HQuestion> list) {
+    public void resetList(List<Question> list) {
         mEmptyType = 0;
         items.clear();
         items.addAll(list);
     }
 
-    public void addList(List<HQuestion> list) {
+    public void addList(List<Question> list) {
         mEmptyType = 0;
         items.addAll(list);
     }
@@ -168,7 +168,7 @@ public class ListenerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public interface onItemDetailListener {
-        void onDetailClick(int i, HQuestion data);
+        void onDetailClick(int i, Question data);
     }
 
     private onItemDetailListener mOnItemDetailListener;

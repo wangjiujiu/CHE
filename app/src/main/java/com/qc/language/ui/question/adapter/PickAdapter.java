@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.qc.language.R;
-import com.qc.language.ui.question.adapter.data.AnswerData;
+import com.qc.language.ui.question.data.OptionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder>{
 
-    private List<AnswerData> items;
+    private List<OptionData> items;
     private List<String> haschooseitems;
     private Context context;
     private OnItemClickListener mOnItemClickListener;
@@ -65,8 +65,11 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder>{
                     viewHolder.answer.setText(items.get(position).getContent());
             }
 
+            if(items.get(position).getSeq()!=null&&!StringUtils.isEmpty(items.get(position).getSeq())){
+                    viewHolder.num.setText(items.get(position).getSeq());
+            }
 
-            if (haschooseitems.contains(items.get(position).getLetter())) {
+            if (haschooseitems.contains(items.get(position).getSeq())) {
                 viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.picked_color));
             } else {
                 viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.white));
@@ -116,16 +119,16 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder>{
         }
     }
 
-    public void resetList(List<AnswerData> list) {
+    public void resetList(List<OptionData> list) {
         items.clear();
         items.addAll(list);
     }
 
-    public void resetHasChooseList(List<AnswerData> list) {
+    public void resetHasChooseList(List<OptionData> list) {
         haschooseitems.clear();
         if (list != null && list.size() > 0) {
-            for (AnswerData ob : list) {
-                haschooseitems.add(ob.getLetter());
+            for (OptionData ob : list) {
+                haschooseitems.add(ob.getSeq());
             }
         }
     }

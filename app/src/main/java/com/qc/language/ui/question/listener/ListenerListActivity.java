@@ -12,12 +12,11 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.qc.language.R;
 import com.qc.language.app.MyApplication;
 import com.qc.language.common.activity.CommonActivity;
+import com.qc.language.service.DataCleanManager;
 import com.qc.language.service.components.DaggerActivityComponent;
-import com.qc.language.ui.question.listener.data.HQuestion;
-import com.qc.language.ui.question.listener.mcs.HmcsDetailActivity;
-import com.qc.language.ui.question.listener.sst.HsstDetailActivity;
+import com.qc.language.ui.question.QuestionContainerActivity;
+import com.qc.language.ui.question.data.Question;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -65,7 +64,7 @@ public class ListenerListActivity extends CommonActivity implements ListenerList
         toolbarTitleTextView.setText(name);
 
         refreshRecyclerView =(RecyclerView) findViewById(R.id.common_list_rv);
-        List<HQuestion> datas = new ArrayList<>();
+        List<Question> datas = new ArrayList<>();
         rsListAdapter = new ListenerListAdapter(this,datas);
         refreshRecyclerView.setAdapter(rsListAdapter);
         refreshRecyclerView.setFocusable(false);
@@ -88,55 +87,33 @@ public class ListenerListActivity extends CommonActivity implements ListenerList
 
         rsListAdapter.setOnItemDetailClickListener(new ListenerListAdapter.onItemDetailListener() {
             @Override
-            public void onDetailClick(int i, HQuestion data) {
+            public void onDetailClick(int i, Question data) {
                 if(data.getSeq()!=null){
                     //先删掉文件夹下的录音和题目文件，以防出错！
                     if(isInteger(data.getSeq())){
-                        if(type.equals("H-SST")){
                         Intent intent = new Intent();
                         intent.putExtra("title",name);
                         intent.putExtra("role",role);
                         intent.putExtra("currentQues",i); //题号
                         intent.putExtra("type",type);
-                        intent.setClass(ListenerListActivity.this, HsstDetailActivity.class);
+                        intent.setClass(ListenerListActivity.this, QuestionContainerActivity.class);
                         startActivity(intent);
-                        }else if(type.equals("H-MCS")){
-                            Intent intent = new Intent();
-                            intent.putExtra("title",name);
-                            intent.putExtra("role",role);
-                            intent.putExtra("currentQues",i); //题号
-                            intent.putExtra("type",type);
-                            intent.setClass(ListenerListActivity.this, HmcsDetailActivity.class);
-                            startActivity(intent);
-                        }
+                    }
                     }else{
                         ToastUtils.showShort("题库有问题！");
                     }
                 }
-            }
         });
-
-
     }
 
-    private static void deleteFilesByDirectory(File file) {
-        if (file.isFile()) {
-            file.delete();
-            return;
-        }
-        if (file.isDirectory()) {
-            File[] childFiles = file.listFiles();
-            if (childFiles == null || childFiles.length == 0) {
-                file.delete();
-                return;
-            }
 
-            for (int i = 0; i < childFiles.length; i++) {
-                deleteFilesByDirectory(childFiles[i]);
-            }
-            file.delete();
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataCleanManager.cleanVoice(getContext()); //退出前清掉所有下载的音频
     }
+
+
 
         @Override
     public void register() {
@@ -151,7 +128,7 @@ public class ListenerListActivity extends CommonActivity implements ListenerList
 
 
     @Override
-    public void loadSuccess(List<HQuestion> dataTObject) {
+    public void loadSuccess(List<Question> dataTObject) {
         if(dataTObject!=null){
             rsListAdapter.resetList(dataTObject);
             rsListAdapter.notifyDataSetChanged();

@@ -1,7 +1,7 @@
 package com.qc.language.ui.question.write.swt;
 
 import com.qc.language.common.contract.CommonContract;
-import com.qc.language.ui.question.listener.data.HQDetail;
+import com.qc.language.ui.question.data.QDetail;
 
 /**
  * Created by beckett on 2018/10/11.
@@ -10,7 +10,7 @@ public interface WswtDetailContract {
 
     interface View extends CommonContract.CommonView {
 
-        void loadSuccess(HQDetail hqDetail);
+        void loadSuccess(QDetail hqDetail);
     }
 
     interface Presenter<T> extends CommonContract.CommonPresenter<T> {

@@ -13,6 +13,7 @@ public class UserDetails {
     private String password;
     private String token;
     private String status;
+    private String id;
 
     public boolean isSuccess() {
         return success;
@@ -76,5 +77,13 @@ public class UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

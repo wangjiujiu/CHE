@@ -22,6 +22,8 @@
             android:hint="原密码"
             android:inputType="textPassword"
             android:paddingLeft="10dp"
+            android:drawableLeft="@mipmap/ic_pwd"
+            android:drawablePadding="10dp"
             android:textColor="@color/colorBlackText"
             android:textColorHint="@color/colorBlackText"
             android:textSize="14sp"/>
@@ -38,7 +40,15 @@
             android:paddingLeft="10dp"
             android:textColor="@color/colorBlackText"
             android:textColorHint="@color/colorBlackText"
+            android:drawableLeft="@mipmap/ic_pwd"
+            android:drawablePadding="10dp"
             android:textSize="14sp"/>
+
+        <View
+            android:layerType="software"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/shape_line_dash"/>
 
         <com.qc.language.common.view.edittext.ClearEditText
             android:id="@+id/updatepwd_confirm_edittext"
@@ -48,10 +58,18 @@
             android:background="@drawable/bg_bottom_half"
             android:inputType="textPassword"
             android:paddingLeft="10dp"
+            android:drawableLeft="@mipmap/ic_pwd"
+            android:drawablePadding="10dp"
             android:textColor="@color/colorBlackText"
             android:textColorHint="@color/colorBlackText"
             android:textSize="14sp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="密码必须是8-16位"
+            />
 
 
         <Button

@@ -11,4 +11,10 @@ public class Constant {
 
     //下载语音文件的地方
     public static final String API_DOWNLOAD_FILE = "http://che.ygzuo.com/external/download?name=";
+
+    // 应用更新地址
+    public static String WEB_UPDATE_URL = "https://58.215.198.210:9997/zqtong/company/android.jsp";
+
+    // 应用APK更新地址
+    public static String WEB_UPDATE_APK_URL="https://58.215.198.210:9997/zqtong/company/android.apk";;
 }

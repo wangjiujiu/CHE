@@ -34,6 +34,7 @@ public class DefaultUserRepository implements UserRepository {
                     .password(details.getPassword())
                     .endTime(details.getEndTime())
                     .token(details.getToken())
+                    .userId(details.getId())
                     .build();
             mDatabase.insert(DBCurUser.TABLE_USER, loginUser);
         } else {
@@ -45,6 +46,7 @@ public class DefaultUserRepository implements UserRepository {
                     .password(details.getPassword())
                     .endTime(details.getEndTime())
                     .token(details.getToken())
+                    .userId(details.getId())
                     .build();
             mDatabase.update(DBCurUser.TABLE_USER, loginUser, DBCurUser.COLUMN_USERNAME + " == ?", details.getUsername());
         }
@@ -74,6 +76,7 @@ public class DefaultUserRepository implements UserRepository {
                 userDetails.setCellphone(DB.getString(cursor, DBCurUser.COLUMN_CELLPHONE));
                 userDetails.setEndTime(DB.getString(cursor,DBCurUser.COLUMN_END_TIME));
                 userDetails.setStatus(DB.getString(cursor, DBCurUser.COLUMN_STATUS));
+                userDetails.setId(DB.getString(cursor, DBCurUser.COLUMN_USER_ID));
                 return userDetails;
             }
         } catch (Exception e) {

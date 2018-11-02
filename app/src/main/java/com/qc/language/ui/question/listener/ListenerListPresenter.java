@@ -8,8 +8,8 @@ import com.qc.language.R;
 import com.qc.language.common.RxPresenter;
 import com.qc.language.service.ApiService;
 import com.qc.language.service.db.question.CurrentQuesstion;
-import com.qc.language.ui.question.listener.data.HListData;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.QListData;
+import com.qc.language.ui.question.data.Question;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,8 +49,8 @@ public class ListenerListPresenter extends RxPresenter<ListenerListContract.View
                         mView.dismissProgress();
                     }
                 })
-                .subscribe(new Observer<HListData>() {
-                    @Override public void onNext(final HListData data) {
+                .subscribe(new Observer<QListData>() {
+                    @Override public void onNext(final QListData data) {
                         if (data.isSuccess()) {
                             //加获取的数据排序加入数据库，听力
                             if (data.getData().size() > 0) {
@@ -72,7 +72,7 @@ public class ListenerListPresenter extends RxPresenter<ListenerListContract.View
                                     }
                                 }.start();
                             }else{
-                                mView.loadSuccess(new ArrayList<HQuestion>());
+                                mView.loadSuccess(new ArrayList<Question>());
                             }
                         } else {
                             ToastUtils.showLong(R.string.list_data_error);

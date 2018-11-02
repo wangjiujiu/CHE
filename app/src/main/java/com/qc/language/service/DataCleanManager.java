@@ -75,7 +75,9 @@ public class DataCleanManager {
 
     public static void cleanVoice(Context context) {
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord");
+        if(file.isFile()&&file.exists()){
         deleteFile(file);
+        }
     }
 
     private static void deleteFile(File file) {

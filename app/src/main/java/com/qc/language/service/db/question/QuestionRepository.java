@@ -1,8 +1,7 @@
 package com.qc.language.service.db.question;
 
 
-import com.qc.language.ui.question.listener.data.HQDetail;
-import com.qc.language.ui.question.listener.data.HQuestion;
+import com.qc.language.ui.question.data.Question;
 
 import java.util.List;
 
@@ -11,10 +10,10 @@ public interface QuestionRepository {
     /**
      * 存入当前题型的id到数据库中
      */
-    public void insertQIdIntoDB(List<HQuestion> ids);
+    public void insertQIdIntoDB(List<Question> ids);
 
     /**
      * 获取所有id
      */
-    public List<HQuestion> selectIdsFromDB();
+    public List<Question> selectIdsFromDB();
 }

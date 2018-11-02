@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import com.qc.language.R;
 import com.qc.language.common.view.itemtouchhelper.ItemTouchActionCallback;
-import com.qc.language.ui.question.adapter.data.AnswerData;
+import com.qc.language.ui.question.data.OptionData;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class SwapListAdapter extends RecyclerView.Adapter<SwapListAdapter.MessageHolder> implements ItemTouchActionCallback {
     private Context mContext;
-    private List<String> mList;
+    private List<OptionData> mList;
 
     public SwapListAdapter(Context context) {
         mContext = context;
@@ -36,7 +37,10 @@ public class SwapListAdapter extends RecyclerView.Adapter<SwapListAdapter.Messag
 
     @Override
     public void onBindViewHolder(MessageHolder holder, final int position) {
-        holder.contentTv.setText(mList.get(position));
+        if(mList.get(position).getContent()!=null){
+        int num = position+1;
+        holder.contentTv.setText(num+"  "+mList.get(position).getContent());
+        }
       }
 
     @Override
@@ -75,13 +79,13 @@ public class SwapListAdapter extends RecyclerView.Adapter<SwapListAdapter.Messag
         }
     }
 
-    public void resetList(List<String> list) {
+    public void resetList(List<OptionData> list) {
         this.mList.clear();
         this.mList.addAll(list);
     }
 
 
-    public List<String> getNewList(){
+    public List<OptionData> getNewList(){
         if(mList!=null){
             return mList;
         }

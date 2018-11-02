@@ -27,51 +27,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.main.UserMainActivity"/>
-        <activity android:name=".ui.question.speak.rs.list.RSListActivity"/>
-        <activity android:name=".ui.question.speak.rs.list.RSDetailActivity"/>
 
-        <activity android:name=".ui.question.speak.ra.list.RAListActivity"/>
-        <activity android:name=".ui.question.speak.ra.list.RADetailActivity"/>
-
-        <activity android:name=".ui.question.speak.di.list.DIListActivity"/>
-        <activity android:name=".ui.question.speak.di.list.DIDetailActivity"/>
-
-        <activity android:name=".ui.question.speak.rl.list.RlListActivity"/>
-        <activity android:name=".ui.question.speak.rl.list.RlDetailActivity"/>
-
-        <activity android:name=".ui.question.speak.asq.list.AsqDetailActivity"/>
-        <activity android:name=".ui.question.speak.asq.list.AsqListActivity"/>
-
-        <activity android:name=".ui.question.read.sar.list.SarDetailActivity"/>
-        <activity android:name=".ui.question.read.sar.list.SarListActivity"/>
-
-        <activity android:name=".ui.question.read.mar.list.MarDetailActivity"/>
-        <activity android:name=".ui.question.read.mar.list.MarListActivity"/>
-
-        <activity android:name=".ui.question.read.rp.list.RpDetailActivity"/>
-        <activity android:name=".ui.question.read.rp.list.RpListActivity"/>
-
-        <activity android:name=".ui.question.read.fibr.list.FibrDetailActivity"/>
-        <activity android:name=".ui.question.read.fibr.list.FibrListActivity"/>
-
-        <activity android:name=".ui.question.read.fibrw.list.FibrwDetailActivity"/>
-        <activity android:name=".ui.question.read.fibrw.list.FibrwListActivity"/>
-
-        <activity android:name=".ui.center.updatepwd.UpdatePwdActivity"/>
+        <activity android:name=".ui.center.updatepwd.UpdatePwdActivity"
+            android:hardwareAccelerated="false"
+            />
         <activity android:name=".ui.main.login.UserLoginActivity"/>
 
         <activity android:name=".ui.question.listener.ListenerListActivity"/>
-        <activity android:name=".ui.question.listener.sst.HsstDetailActivity"/>
-        <activity android:name=".ui.question.listener.mcm.HmcmDetailActivity"/>
-        <activity android:name=".ui.question.listener.fibl.HfiblDetailActivity"/>
-        <activity android:name=".ui.question.listener.smw.HsmwDetailActivity"/>
-        <activity android:name=".ui.question.listener.hcs.HhcsDetailActivity"/>
-        <activity android:name=".ui.question.listener.hiw.HhiwDetailActivity"/>
-        <activity android:name=".ui.question.listener.wfd.HwfdDetailActivity"/>
-        <activity android:name=".ui.question.listener.mcs.HmcsDetailActivity"/>
 
         <!--写作-->
-        <activity android:name=".ui.question.write.swt.WswtDetailActivity"/>
+
+        <activity android:name=".ui.question.QuestionContainerActivity"/>
+
+        <activity android:name=".ui.update.UpdateActivity"/>
 
     </application>
 
