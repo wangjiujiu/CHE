@@ -4,6 +4,7 @@ package com.qc.language.common.view.selectabletextview;
 public class WordInfo {
     private int start;
     private int end;
+    private String content;
 
     public int getStart() {
         return start;
@@ -21,5 +22,11 @@ public class WordInfo {
         this.end = end;
     }
 
+    public String getContent() {
+        return content;
+    }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

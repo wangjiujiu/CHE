@@ -7,14 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -23,6 +27,8 @@ import com.qc.language.app.MyApplication;
 import com.qc.language.common.fragment.CommonFragment;
 import com.qc.language.common.utils.FileHelper;
 import com.qc.language.common.view.selectabletextview.SelectableTextView;
+import com.qc.language.common.view.selectabletextview.SkuFlowLayout;
+import com.qc.language.common.view.selectabletextview.WordInfo;
 import com.qc.language.common.view.textview.html.HtmlUtils;
 import com.qc.language.framework.sound.VoiceItem;
 import com.qc.language.service.Constant;
@@ -77,7 +83,7 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
 
     //考题内容
     private TextView quesTv;
-    private SelectableTextView askTv;
+    private SkuFlowLayout askTv;
     private TextView typeTv;
     //是否在播放题目
     private ImageView playTestBtn;
@@ -108,7 +114,7 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
         //题目区
         typeTv = (TextView) parentView.findViewById(R.id.listener_type);
         quesTv = (TextView) parentView.findViewById(R.id.listener_title);
-        askTv = (SelectableTextView) parentView.findViewById(R.id.listener_ask);
+        askTv = (SkuFlowLayout) parentView.findViewById(R.id.listener_ask);
         playTestBtn = (ImageView)parentView.findViewById(R.id.iv_play_bar_play);
         seekBar = (ProgressBar) parentView.findViewById(R.id.pb_play_bar);
 
@@ -317,8 +323,9 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
 
             if(hqDetail.getData().getContent()!=null){
                 String htmlcontent = hqDetail.getData().getContent().replaceAll("font","androidfont");
-                askTv.setText(HtmlUtils.getHtml(getCommonActivity(), askTv, htmlcontent)); //问题
-                askTv.setSelectTextBackColor(R.color.colorPrimary);
+                String newContent = Html.fromHtml(htmlcontent).toString();
+                List<WordInfo> wordInfos = getWordInfo(newContent);
+                setFlowLayoutData(wordInfos,askTv);
             }
 
             //答案
@@ -347,4 +354,79 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
                 }
         }
     }
+
+    /**
+     * 获取单词的info
+     *
+     * @return
+     */
+    private List<WordInfo> getWordInfo(String content) {
+        // 获取分割之后的所有单词
+        List<String> words = splitWord(content);
+        // 创建WordInfos
+        List<WordInfo> result = new ArrayList<>();
+        int startIndex = 0;
+        for (int i = 0; i < words.size(); i++) {
+            String word = words.get(i);
+            // 获取开始位置
+            int start = content.indexOf(word, startIndex);
+            int end = start + word.length();
+            startIndex = end;
+            WordInfo wordInfo = new WordInfo();
+            wordInfo.setStart(start);
+            wordInfo.setEnd(end);
+            wordInfo.setContent(word);
+            result.add(wordInfo);
+        }
+        return result;
+    }
+
+    /**
+     * 获取分割之后的所有单词
+     *
+     * @return
+     */
+    private List<String> splitWord(String content) {
+        if (TextUtils.isEmpty(content.toString())) {
+            return new ArrayList<String>();
+        }
+        List<String> results = new ArrayList<>();
+        String [] arr = content.split("\\s+");
+        int i=0;
+        if(arr.length>0){
+            while (i<arr.length){
+                results.add(arr[i]);
+                i++;
+            }
+        }
+        return results;
+    }
+
+
+
+
+    private void setFlowLayoutData(final List<WordInfo> childrenList, final SkuFlowLayout flowLayout) {
+        flowLayout.removeAllViews();
+        for (int x = 0; x < childrenList.size(); x++) {
+            final CheckBox checkBox = (CheckBox) View.inflate(getCommonActivity(), R.layout.item_flowlayout_content, null);
+            checkBox.setText(childrenList.get(x).getContent());
+            final int finalX = x;
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //布局消失，刷新列表
+//                    key = childrenList.get(finalX);
+//                    if(checkBox.isChecked()){
+//                        checkBox.setChecked(false);
+//                    }else{
+//                        checkBox.setChecked(true);
+//                    }
+                }
+            });
+            flowLayout.addView(checkBox);
+        }
+
+    }
+
+
 }

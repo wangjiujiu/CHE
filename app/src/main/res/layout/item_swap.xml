@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/font_14"
         android:textColor="@color/colorBlackText"
-        android:text="aaaaaaaaa"
+        android:text=""
         />
 </LinearLayout>

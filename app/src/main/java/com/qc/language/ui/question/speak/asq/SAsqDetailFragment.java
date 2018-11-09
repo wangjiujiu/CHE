@@ -87,7 +87,7 @@ public class SAsqDetailFragment extends CommonFragment implements AsqDetailContr
     private String rightAnswer;
     private Button checkBtn;
 
-    private RelativeLayout answerRl;
+    private LinearLayout answerRl;
     private ImageView recordBtn;
     private String recordState="录音"; //录音，不能录音，结束
     private boolean isVoicePressing = false;
@@ -124,7 +124,7 @@ public class SAsqDetailFragment extends CommonFragment implements AsqDetailContr
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
 
-        answerRl = (RelativeLayout) parentView.findViewById(R.id.rs_vip_btn);
+        answerRl = (LinearLayout) parentView.findViewById(R.id.rs_vip_btn);
         recordBtn = (ImageView) parentView.findViewById(R.id.rs_vip_recorded);
         playBtn = (ImageView) parentView.findViewById(R.id.rs_vip_player);
 

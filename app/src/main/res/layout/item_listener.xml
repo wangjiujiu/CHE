@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="For and marketing course that requires the....."
+            android:text=""
             android:maxLines="2"
             android:ellipsize="end"
             android:textColor="@color/colorBlackText"
@@ -51,7 +51,7 @@
             android:background="@drawable/bg_status_shape"
             android:textColor="@color/red"
             android:padding="@dimen/status_padding"
-            android:text="新题"
+            android:text=""
             android:visibility="gone"
             android:textSize="@dimen/font_14" />
     </LinearLayout>

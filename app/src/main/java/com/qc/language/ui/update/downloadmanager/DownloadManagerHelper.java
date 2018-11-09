@@ -87,7 +87,7 @@ public class DownloadManagerHelper implements DownloadContract {
 
                 manager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setDestinationInExternalPublicDir("dirType", "/zqt/zqt.apk");
+                request.setDestinationInExternalPublicDir("che", "/che.apk");
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
                 downloadId = manager.enqueue(request);
             }
@@ -124,11 +124,11 @@ public class DownloadManagerHelper implements DownloadContract {
 
     @Override
     public void downloadComplete() {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/dirType/zqt/zqt.apk");
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/che/che.apk");
         if (file.exists()) {
             if (Build.VERSION.SDK_INT >= 24) {
                 // Android 7.0 需要用FileProvider的方式来将uri给外部应用使用
-                Uri uri = FileProvider.getUriForFile(mContext, "com.qc.language.provider", file);
+                Uri uri = FileProvider.getUriForFile(mContext,  "com.qc.language.provider", file);
                 Intent intent = new Intent("android.intent.action.VIEW");
                 intent.addCategory("android.intent.category.DEFAULT");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

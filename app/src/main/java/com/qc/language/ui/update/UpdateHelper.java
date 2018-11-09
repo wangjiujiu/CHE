@@ -12,8 +12,8 @@ import com.qc.language.common.view.panterdialog.interfaces.OnDialogClickListener
 import com.qc.language.service.Constant;
 import com.qc.language.ui.update.downloadmanager.DownloadManagerHelper;
 
-
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -33,6 +33,24 @@ public class UpdateHelper {
 
     private static String filePath;
 
+    private static void deleteFilesByDirectory(File file) {
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] childFiles = file.listFiles();
+            if (childFiles == null || childFiles.length == 0) {
+                file.delete();
+                return;
+            }
+
+            for (int i = 0; i < childFiles.length; i++) {
+                deleteFilesByDirectory(childFiles[i]);
+            }
+            file.delete();
+        }
+    }
     /**
      * 检查更新
      *
@@ -42,8 +60,11 @@ public class UpdateHelper {
      */
     public static void doUpdate(final boolean showToast, final Context context, final Activity activity){
 
-        filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/zqt.apk";
-
+        filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/che/che.apk";
+        File file = new File(filePath);
+        if (file.exists()) {
+            deleteFilesByDirectory(file);
+        }
         OkHttpClient httpCient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(Constant.WEB_UPDATE_URL)

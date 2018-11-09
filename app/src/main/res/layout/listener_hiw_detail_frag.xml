@@ -97,13 +97,14 @@
                 <!--音频区-->
                 <include layout="@layout/layout_play_voice" />
 
-                <com.qc.language.common.view.selectabletextview.SelectableTextView
+                <com.qc.language.common.view.selectabletextview.SkuFlowLayout
                     android:id="@+id/listener_ask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_18"
                     android:textColor="@color/colorBlackText"
                     android:text=""/>
+
 
                 <!--显示答案区-->
 

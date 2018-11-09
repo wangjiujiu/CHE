@@ -1,9 +1,15 @@
 package com.qc.language.ui.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -14,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.qc.language.R;
 import com.qc.language.common.activity.CommonActivity;
 import com.qc.language.service.db.user.CurrentUser;
@@ -48,6 +55,8 @@ public class UserMainActivity extends CommonActivity{
 
     private VipPopWindow tipPopWindow;
 
+    private final  int REQUEST_CODE_APP_INSTALL=999;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +76,59 @@ public class UserMainActivity extends CommonActivity{
         doubleClickExitHelper = new DoubleClickExitHelper(this); // 注册双击退出事件
 
         //检查更新
-        UpdateHelper.doUpdate(false,this, this);
+
+        checkIsAndroidO();
     }
+
+    /*
+     *
+     * 判断是否是8.0,8.0需要处理未知应用来源权限问题,否则直接安装
+     */
+    private void checkIsAndroidO() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            boolean b = getPackageManager().canRequestPackageInstalls();
+            if (b) {
+                UpdateHelper.doUpdate(false,this, this);
+            } else {
+                //请求安装未知应用来源的权限
+                ToastUtils.showLong("android8.0以上在线更新，需要授权安装未知来源应用权限才能在线更新");
+                startInstallPermissionSettingActivity(this);
+            }
+        } else {
+            UpdateHelper.doUpdate(false,this, this);
+        }
+    }
+
+    /**
+     * 跳转到设置-允许安装未知来源-页面
+     */
+    /**
+     * 开启设置安装未知来源应用权限界面
+     * @param context
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity(Context context) {
+        if (context == null){
+            return;
+        }
+        Uri packageURI = Uri.parse("package:" + getPackageName());
+        //注意这个是8.0新API
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+        startActivityForResult(intent, REQUEST_CODE_APP_INSTALL);
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== Activity.RESULT_OK ){
+            if(requestCode==REQUEST_CODE_APP_INSTALL){
+                UpdateHelper.doUpdate(false,this, this);
+            }
+        }
+    }
+
 
     private void setListener() {
         bnve.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

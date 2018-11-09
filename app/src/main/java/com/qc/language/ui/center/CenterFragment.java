@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding.view.RxView;
 import com.qc.language.R;
 import com.qc.language.common.fragment.CommonFragment;
@@ -22,6 +24,7 @@ import com.qc.language.service.db.data.UserDetails;
 import com.qc.language.service.db.user.CurrentUser;
 import com.qc.language.ui.center.updatepwd.UpdatePwdActivity;
 import com.qc.language.ui.main.UserMainActivity;
+import com.qc.language.ui.main.login.UserLoginActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +41,7 @@ public class CenterFragment extends CommonFragment {
     private TextView nameTv;
     private TextView phoneTv;
     private RelativeLayout changeRl;
+    private RelativeLayout exitRl;
     private TextView endTime;
 
     private boolean isfirst = true;
@@ -56,6 +60,11 @@ public class CenterFragment extends CommonFragment {
         phoneTv = (TextView) root.findViewById(R.id.setting_cellphone);
         changeRl = (RelativeLayout) root.findViewById(R.id.center_frag_pwd);
         endTime = (TextView) root.findViewById(R.id.setting_endTime);
+        exitRl = (RelativeLayout) root.findViewById(R.id.center_frag_exit);
+
+        if(CurrentUser.getCurrentUser().hasLogin()){
+            exitRl.setVisibility(View.VISIBLE);
+        }
 
         //当前状态登录了
         initView();
@@ -88,9 +97,43 @@ public class CenterFragment extends CommonFragment {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        if(CurrentUser.getCurrentUser().hasLogin()){
                         Intent intent = new Intent();
                         intent.setClass(getCommonActivity(), UpdatePwdActivity.class);
                         startActivity(intent);
+                        }else{
+                            ToastUtils.showLong("请先登录！");
+                        }
+                    }
+                });
+
+        RxView.clicks(this.exitRl).throttleFirst(2, TimeUnit.SECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        new PanterDialog(getContext())
+                                .setHeaderBackground(R.color.white)
+                                .setTitle("提示", 14)
+                                .setTitleColor(R.color.colorBlackText)
+                                .setTitleColor(R.color.colorBlackText)
+                                .setMessage("是否退出登录？")
+                                .setNegative("否")
+                                .setPositive("是", new OnDialogClickListener() {
+                                    @Override
+                                    public void onDialogButtonClicked(PanterDialog dialog) {
+                                        CurrentUser.getCurrentUser().removeCurrentUser(); //移除信息，重新登录
+                                        Intent intent = new Intent();
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.setClass(getCommonActivity(), UserMainActivity.class);
+                                        startActivity(intent);
+                                        getCommonActivity().finish();
+                                    }
+                                })
+                                .withAnimation(Animation.SLIDE)
+                                .isCancelable(false)
+                                .show();
+
                     }
                 });
     }
@@ -111,6 +154,10 @@ public class CenterFragment extends CommonFragment {
             if(CurrentUser.getCurrentUser().isRefreshSetting()){
                  CurrentUser.getCurrentUser().updateRefreshSetting(false);
                  initView();
+            }
+
+            if(CurrentUser.getCurrentUser().hasLogin()){
+                exitRl.setVisibility(View.VISIBLE);
             }
         }
     }

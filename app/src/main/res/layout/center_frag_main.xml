@@ -330,6 +330,30 @@
                 <include layout="@layout/common_single_line"></include>
             </LinearLayout>
 
+
+            <RelativeLayout
+                android:id="@+id/center_frag_exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_listview_item"
+                >
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/font_18"
+                    android:textColor="@color/red"
+                    android:layout_margin="15dp"
+                    android:maxWidth="200dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:text="退出登录"/>
+            </RelativeLayout>
+
         </LinearLayout>
 
 

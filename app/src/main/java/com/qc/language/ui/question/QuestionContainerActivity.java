@@ -80,7 +80,7 @@ public class QuestionContainerActivity extends CommonActivity {
         final Handler handler = new Handler(){
             public void handleMessage(Message msg) {
                 if (msg.obj == "DB") {
-                    toolbarTitleTextView.setText("第"+(currentQues+1)+"题");
+                    toolbarTitleTextView.setText(name+"-"+(currentQues+1)+"/"+totalQues);
                     setListener();
                 }
             }
@@ -339,7 +339,7 @@ public class QuestionContainerActivity extends CommonActivity {
                     ToastUtils.showShort("已经是第一题了");
                 }else{
                     currentQues--;
-                    toolbarTitleTextView.setText("第"+(currentQues+1)+"题");
+                    toolbarTitleTextView.setText(name+"-"+(currentQues+1)+"/"+totalQues);
                     //替换fragment
                     initFragment();
                 }
@@ -354,7 +354,7 @@ public class QuestionContainerActivity extends CommonActivity {
                     ToastUtils.showShort("已经是最后一题了");
                 }else{
                     currentQues++;
-                    toolbarTitleTextView.setText("第"+(currentQues+1)+"题");
+                    toolbarTitleTextView.setText(name+"-"+(currentQues+1)+"/"+totalQues);
                     //替换fragment
                     initFragment();
                 }
