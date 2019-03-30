@@ -85,6 +85,10 @@ public class HsstDetailFragment extends CommonFragment implements HsstDetailCont
     private String rightAnswer;
     private Button checkBtn;
 
+    private String scriptContent;
+    private TextView scriptTv;
+    private Button scriptBtn;
+
     @Inject HsstDetailPresenter hsstDetailPresenter;
 
 
@@ -103,6 +107,10 @@ public class HsstDetailFragment extends CommonFragment implements HsstDetailCont
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
         myAnswerEt = (EditText) parentView.findViewById(R.id.listener_fill_answer);
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptBtn.setVisibility(View.VISIBLE);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -152,6 +160,19 @@ public class HsstDetailFragment extends CommonFragment implements HsstDetailCont
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "答案："+htmlcontent));
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -304,6 +325,10 @@ public class HsstDetailFragment extends CommonFragment implements HsstDetailCont
                 rightAnswer = hqDetail.getData().getAnswer();
             }
 
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
+            }
+
             if(hqDetail.getData().getFile()!=null&&!StringUtils.isEmpty(hqDetail.getData().getFile())){
                 String file = Constant.API_DOWNLOAD_FILE+ hqDetail.getData().getFile();
                 final File voiceFile = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord", hqDetail.getData().getFile());
@@ -322,7 +347,7 @@ public class HsstDetailFragment extends CommonFragment implements HsstDetailCont
                 voiceTestItem.setPath("");
                 initMediaPlayer();
             }
-            }
+        }
     }
 
 }

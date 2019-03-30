@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -100,6 +101,10 @@ public class HmcmDetailFragment extends CommonFragment implements HmcmDetailCont
     List<OptionData> dataList;
     private List<OptionData> haschooseitems=new ArrayList<>();
 
+    private TextView scriptTv;
+    private String scriptContent;
+    private Button scriptBtn;
+
     @Inject
     HmcmDetailPresenter hsstDetailPresenter;
 
@@ -127,6 +132,10 @@ public class HmcmDetailFragment extends CommonFragment implements HmcmDetailCont
         recyclerView.setNestedScrollingEnabled(false);
         adapter = new PickAdapter(getContext());
         recyclerView.setAdapter(adapter);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptBtn.setVisibility(View.VISIBLE);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -186,6 +195,19 @@ public class HmcmDetailFragment extends CommonFragment implements HmcmDetailCont
                     }
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -345,6 +367,11 @@ public class HmcmDetailFragment extends CommonFragment implements HmcmDetailCont
             if(hqDetail.getData().getAnswer()!=null){
                 rightAnswer = hqDetail.getData().getAnswer();
             }
+
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
+            }
+
             //音频文件
             if(hqDetail.getData().getFile()!=null&&!StringUtils.isEmpty(hqDetail.getData().getFile())){
                 String file = Constant.API_DOWNLOAD_FILE+ hqDetail.getData().getFile();

@@ -102,6 +102,10 @@ public class HfiblDetailFragment extends CommonFragment implements HmcmDetailCon
     private String rightAnswer;
     private Button checkBtn;
 
+    private String scriptContent;
+    private TextView scriptTv;
+    private Button scriptBtn;
+
     @Inject
     HmcmDetailPresenter hsstDetailPresenter;
 
@@ -124,6 +128,9 @@ public class HfiblDetailFragment extends CommonFragment implements HmcmDetailCon
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
         mEtInput = (EditText) parentView.findViewById(R.id.et_input);
         mSpansManager = new SpansManager(this,askTv,mEtInput);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -175,6 +182,19 @@ public class HfiblDetailFragment extends CommonFragment implements HmcmDetailCon
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "答案："+htmlcontent));
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -333,6 +353,14 @@ public class HfiblDetailFragment extends CommonFragment implements HmcmDetailCon
             if(hqDetail.getData().getAnswer()!=null){
                 rightAnswer = hqDetail.getData().getAnswer();
             }
+
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
+                if(!StringUtils.isEmpty(scriptContent)){
+                    scriptBtn.setVisibility(View.VISIBLE);
+                }
+            }
+
             //音频文件
                 if (hqDetail.getData().getFile() != null && !StringUtils.isEmpty(hqDetail.getData().getFile())) {
                     String file = Constant.API_DOWNLOAD_FILE + hqDetail.getData().getFile();

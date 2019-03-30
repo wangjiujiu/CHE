@@ -7,6 +7,12 @@
     <string name="main_bottom_vip">VIP</string>
     <string name="main_bottom_center">用户中心</string>
 
+    <!--回答和显示原文-->
+    <string name="question_content">your answer……</string>
+    <string name="question_answer">answer</string>
+    <string name="question_script">script</string>
+    <string name="question_audio">audio</string>
+
     <!--自定义对话框panterdialog-->
     <string name="dialog_positive">OK</string>
     <string name="dialog_negative">NO</string>

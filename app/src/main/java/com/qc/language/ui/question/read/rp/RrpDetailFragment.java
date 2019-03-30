@@ -33,8 +33,11 @@ import com.qc.language.ui.question.listener.mcs.HmcsDetailContract;
 import com.qc.language.ui.question.listener.mcs.HmcsDetailPresenter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -63,6 +66,11 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
 
     private String rightAnswer;
     private Button checkBtn;
+    private LinearLayout answerLl;
+    private RecyclerView recyclerViewRight;
+    private RightAdapter adapterRight;
+    List<OptionData> dataListRight;
+
 
     //单选
     private RecyclerView recyclerView;
@@ -77,7 +85,7 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View parentView = inflater.inflate(R.layout.read_mcs_detail_frag, container, false);
+        View parentView = inflater.inflate(R.layout.read_ro_detail_frag, container, false);
 
 
         //题目区
@@ -98,6 +106,17 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
         ItemTouchHelperCallback callback = new ItemTouchHelperCallback(ItemTouchHelperCallback.DRAG_FLAGS_VERTICAL,adapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
+
+        answerLl = parentView.findViewById(R.id.rs_content_ll);
+        recyclerViewRight = (RecyclerView)parentView.findViewById(R.id.mcs_detail_right);
+        adapterRight = new RightAdapter(getCommonActivity());
+        recyclerViewRight.setLayoutManager(new LinearLayoutManager(getCommonActivity()));
+        recyclerViewRight.addItemDecoration(new RecycleViewDivider(getCommonActivity(), LinearLayoutManager.VERTICAL, R.color.colorDivider));
+        recyclerViewRight.addItemDecoration(new SpacesItemDecoration(5));
+        recyclerViewRight.setAdapter(adapterRight);
+        ItemTouchHelperCallback callback1 = new ItemTouchHelperCallback(ItemTouchHelperCallback.DRAG_FLAGS_VERTICAL,adapter);
+        ItemTouchHelper helper1 = new ItemTouchHelper(callback1);
+        helper1.attachToRecyclerView(recyclerViewRight);
 
         return parentView;
     }
@@ -135,6 +154,35 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
 
     }
 
+    public static boolean isNumeric(String str){
+
+        Pattern pattern = Pattern.compile("[0-9]*");
+
+        return pattern.matcher(str).matches();
+
+    }
+
+    public static String letterToNum(String input)	{
+        String reg = "[a-zA-Z]";
+        StringBuffer strBuf = new StringBuffer();
+        input = input.toLowerCase();
+        if (null != input && !"".equals(input))
+        {
+            for (char c : input.toCharArray())
+            {
+                if (String.valueOf(c).matches(reg))
+                {
+                    strBuf.append(c - 96);
+                } else
+                    {
+                        strBuf.append(c);
+                    }
+            }
+            return strBuf.toString();
+        } else {
+            return input;
+        }
+    }
 
     private void setListener() {
 
@@ -142,18 +190,36 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
             @Override
             public void onClick(View v) {
                 if(!StringUtils.isEmpty(rightAnswer)) {
+                    answerLl.setVisibility(View.VISIBLE);
                     answerRightTv.setVisibility(View.VISIBLE);
                     String htmlcontent = rightAnswer.replaceAll("font","androidfont");
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "答案："+htmlcontent));
 
-//                    if(dataList!=null&&dataList.size()>0){
-//                    CheckAdapter checkAdapter = new CheckAdapter(getContext());
-//                    recyclerView.setAdapter(checkAdapter);
-//                    checkAdapter.resetList(dataList);
-//                    checkAdapter.resetRightAnswer(htmlcontent);
-//                    checkAdapter.resetHasChooseList(haschooseitems);
-//                    checkAdapter.notifyDataSetChanged();
-//                    }
+                    recyclerViewRight.setVisibility(View.VISIBLE);
+
+                    String s = htmlcontent.replaceAll( "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]" , ""); //去除所有標點
+
+                    //321   ABC排成  CBA
+                    List<OptionData> optionData = new ArrayList<>();
+                    List<String> list1 = new ArrayList<>();
+                    for(int i=0;i<dataListRight.size();i++){
+                        if(i<s.length()){
+                            String word = s.substring(i,i+1);
+                            String n = letterToNum(word);  //
+                            if(isNumeric(n)) {
+                               list1.add(n);
+                            }
+                        }
+                    }
+                    for(int i=0;i<list1.size();i++) {
+                       for(int j=0;j<dataListRight.size();j++){
+                           if(list1.get(i).equals(dataListRight.get(j).getSeq())){
+                               optionData.add(dataListRight.get(j));
+                           }
+                       }
+                    }
+                    adapterRight.setItems(optionData);
+                    adapterRight.notifyDataSetChanged();
                 }else{
                     ToastUtils.showShort("暂缺答案");
                 }
@@ -198,6 +264,7 @@ public class RrpDetailFragment extends CommonFragment implements HmcsDetailContr
             if(hqDetail.getData().getItems()!=null&&hqDetail.getData().getItems().size()>0){
                  Collections.sort(hqDetail.getData().getItems());
                  dataList = hqDetail.getData().getItems();
+                 dataListRight = hqDetail.getData().getItems();  //沒有排序的
                  adapter.resetList(dataList);
                  adapter.notifyDataSetChanged();
             }

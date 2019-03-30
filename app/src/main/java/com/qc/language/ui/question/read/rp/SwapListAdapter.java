@@ -23,6 +23,7 @@ import java.util.List;
 public class SwapListAdapter extends RecyclerView.Adapter<SwapListAdapter.MessageHolder> implements ItemTouchActionCallback {
     private Context mContext;
     private List<OptionData> mList;
+    private String[] strs = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     public SwapListAdapter(Context context) {
         mContext = context;
@@ -38,8 +39,12 @@ public class SwapListAdapter extends RecyclerView.Adapter<SwapListAdapter.Messag
     @Override
     public void onBindViewHolder(MessageHolder holder, final int position) {
         if(mList.get(position).getContent()!=null){
-        int num = position+1;
-        holder.contentTv.setText(num+"  "+mList.get(position).getContent());
+            int num = position+1;
+        if(position<strs.length){
+            holder.contentTv.setText(strs[position]+"  "+mList.get(position).getContent());
+         }else{
+            holder.contentTv.setText(num+"  "+mList.get(position).getContent());
+        }
         }
       }
 

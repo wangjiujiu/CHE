@@ -80,8 +80,18 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
     private Timer timer;
     private boolean isSeekBarChanging=false;//互斥变量，防止进度条与定时器冲突
     private int currentPosition=0;//当前音乐播放的进度
-    SimpleDateFormat format;
     MediaPlayer testPlayer = new MediaPlayer();
+
+    //答案
+    private ImageView playTestBtn1;
+    private ProgressBar seekBar1;  //进度条
+    private VoiceItem voiceTestItem1 ;
+    private String attachmentFile1="";
+    private Timer timer1;
+    private boolean isSeekBarChanging1=false;//互斥变量，防止进度条与定时器冲突
+    private int currentPosition1=0;//当前音乐播放的进度
+    MediaPlayer testPlayer1 = new MediaPlayer();
+
 
     //vip区域
     private LinearLayout vipLl;
@@ -100,9 +110,12 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
     private String voiceName;
     private VoiceItem voiceItem;
 
+    private LinearLayout answerVoiceLl;
+
     private Handler voiceHandler;
     private SoundMeter voiceSensor;
 
+    private Button scriptBtn;
 
     @Inject
     RADetailPresenter hsstDetailPresenter;
@@ -121,6 +134,9 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
         playTestBtn = (ImageView)parentView.findViewById(R.id.iv_play_bar_play);
         seekBar = (ProgressBar) parentView.findViewById(R.id.pb_play_bar);
 
+        playTestBtn1 = (ImageView)parentView.findViewById(R.id.iv_play_bar_play_answer);
+        seekBar1= (ProgressBar) parentView.findViewById(R.id.pb_play_bar_answer);
+
         vipLl = (LinearLayout) parentView.findViewById(R.id.vip_only);
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
@@ -129,6 +145,8 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
         recordBtn = (ImageView) parentView.findViewById(R.id.rs_vip_recorded);
         playBtn = (ImageView) parentView.findViewById(R.id.rs_vip_player);
 
+        answerVoiceLl = (LinearLayout) parentView.findViewById(R.id.answer_voice_file);
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
         return parentView;
     }
 
@@ -158,7 +176,6 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
                 vipLl.setVisibility(View.GONE);
                 answerRl.setVisibility(View.GONE);
             }
-            format = new SimpleDateFormat("mm:ss");
             voiceHandler = new Handler();
             voiceSensor = new SoundMeter();
 
@@ -180,7 +197,72 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
                     String htmlcontent = rightAnswer.replaceAll("font","androidfont");
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "原文："+htmlcontent));
                 }else{
-                    ToastUtils.showShort("暂缺答案");
+                    ToastUtils.showShort("暂缺原文");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(attachmentFile1)){
+                    answerVoiceLl.setVisibility(View.VISIBLE);
+                    String file = Constant.API_DOWNLOAD_FILE+ attachmentFile1;
+                    final File voiceFile = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord", attachmentFile1);
+                    if (!voiceFile.exists()) {
+                        downloadMusic1(file,attachmentFile1);
+                    }else{
+                        //文件存在
+                        String path = voiceFile.getAbsolutePath();
+                        voiceTestItem1 = new VoiceItem();
+                        voiceTestItem1.setPath(path);
+                        voiceTestItem1.setUpdate(false);
+                        initMediaPlayer1();
+                    }
+                }else{
+                    voiceTestItem1 = new VoiceItem();
+                    voiceTestItem1.setPath("");
+                    initMediaPlayer1();
+                    ToastUtils.showShort("暂缺音频答案");
+                }
+            }
+        });
+
+        playTestBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isPlayPressing&&!isVoicePressing){
+                    if(voiceTestItem1!=null){
+                        if(!StringUtils.isEmpty(voiceTestItem1.getPath())){
+                            if(!testPlayer1.isPlaying()){  //播放中
+                                playTestBtn1.setImageResource(R.mipmap.ic_play_bar_btn_pause);
+                                testPlayer1.start();
+                                testPlayer1.seekTo(currentPosition1);
+                                //监听播放时回调函数
+                                timer1 = new Timer();
+                                timer1.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        if (!isSeekBarChanging1) {
+                                            try{
+                                                seekBar1.setProgress(testPlayer1.getCurrentPosition());
+                                            }catch(Exception e){
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                }, 0, 50);
+                            }else if(testPlayer1.isPlaying()){
+                                testPlayer1.pause();
+                                currentPosition1 = testPlayer1.getCurrentPosition();
+                                playTestBtn1.setImageResource(R.mipmap.ic_play_bar_btn_play);
+                            }
+                        }else{
+                            ToastUtils.showShort("没有音频文件！");
+                        }
+                    }else{
+                        ToastUtils.showShort("稍等，正在缓存音频！");
+                    }
                 }
             }
         });
@@ -221,6 +303,17 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
                         ToastUtils.showShort("稍等，正在缓存音频！");
                     }
                }
+            }
+        });
+
+        testPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                //播放完毕回调
+                playTestBtn1.setImageResource(R.mipmap.ic_play_bar_btn_play);
+                currentPosition1 = 0;
+                testPlayer1.reset();//停止播放
+                initMediaPlayer1();
             }
         });
 
@@ -320,6 +413,7 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
         }
     };
 
+
     private void initMediaPlayer() {
         try {
             testPlayer.setDataSource(voiceTestItem.getPath());//指定音频文件的路径
@@ -327,6 +421,20 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
             testPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                   seekBar.setMax(testPlayer.getDuration());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initMediaPlayer1() {
+        try {
+            testPlayer1.setDataSource(voiceTestItem1.getPath());//指定音频文件的路径
+            testPlayer1.prepare();//让mediaplayer进入准备状态
+            testPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    seekBar1.setMax(testPlayer1.getDuration());
                 }
             });
         } catch (Exception e) {
@@ -351,6 +459,21 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
             timer.cancel();
             timer = null;
         }
+
+        isSeekBarChanging1 = false;
+        if (testPlayer1 != null) {
+            testPlayer1.stop();
+            try{
+                testPlayer1.release();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            testPlayer1 = null;
+        }
+        if (timer1 != null) {
+            timer1.cancel();
+            timer1 = null;
+        }
     }
 
 
@@ -363,7 +486,7 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                ToastUtils.showLong("音频试题获取失败！");
+                ToastUtils.showLong("音频答案获取失败！");
             }
 
             @Override
@@ -386,6 +509,46 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
                     voiceTestItem = new VoiceItem();
                     voiceTestItem.setPath(path);
                     voiceTestItem.setUpdate(false);
+                    initMediaPlayer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void downloadMusic1(final String url, final String fileName){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url)
+                .addHeader("Accept", "application/json")
+                .get()//传参数、文件或者混合，改一下就行请求体就行
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastUtils.showLong("音频答案获取失败！");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    InputStream is = response.body().byteStream();
+                    File file = FileHelper.createFile(fileName);
+                    String path = file.getAbsolutePath();
+                    FileOutputStream fos = new FileOutputStream(file);
+                    BufferedInputStream bis = new BufferedInputStream(is);
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = bis.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
+                        fos.flush();
+                    }
+                    fos.close();
+                    bis.close();
+                    is.close();
+                    voiceTestItem1 = new VoiceItem();
+                    voiceTestItem1.setPath(path);
+                    voiceTestItem1.setUpdate(false);
                     initMediaPlayer();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -428,24 +591,34 @@ public class SrlDetailFragment extends CommonFragment implements RADetailContrac
                             .into(askTv);
                 }
 
-                if (hqDetail.getData().getFile() != null && !StringUtils.isEmpty(hqDetail.getData().getFile())) {
-                    String file = Constant.API_DOWNLOAD_FILE + hqDetail.getData().getFile();
-                    final File voiceFile = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord", hqDetail.getData().getFile());
-                    if (!voiceFile.exists()) {
-                        downloadMusic(file, hqDetail.getData().getFile());
-                    } else {
-                        //文件存在
-                        String path = voiceFile.getAbsolutePath();
-                        voiceTestItem = new VoiceItem();
-                        voiceTestItem.setPath(path);
-                        voiceTestItem.setUpdate(false);
-                        initMediaPlayer();
-                    }
-                } else {
+            //音频文件
+            if(hqDetail.getData().getFile()!=null&&!StringUtils.isEmpty(hqDetail.getData().getFile())){
+                String file = Constant.API_DOWNLOAD_FILE+ hqDetail.getData().getFile();
+                final File voiceFile = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord", hqDetail.getData().getFile());
+                if (!voiceFile.exists()) {
+                    downloadMusic(file,hqDetail.getData().getFile());
+                }else{
+                    //文件存在
+                    String path = voiceFile.getAbsolutePath();
                     voiceTestItem = new VoiceItem();
-                    voiceTestItem.setPath("");
+                    voiceTestItem.setPath(path);
+                    voiceTestItem.setUpdate(false);
                     initMediaPlayer();
                 }
+            }else{
+                voiceTestItem = new VoiceItem();
+                voiceTestItem.setPath("");
+                initMediaPlayer();
+            }
+
+            //音频答案
+            if(hqDetail.getData().getAanswer()!=null&&!StringUtils.isEmpty(hqDetail.getData().getAanswer())){
+                attachmentFile1 = hqDetail.getData().getAanswer();
+            }else{
+                attachmentFile1 = "";
+            }
+
+
         }
     }
 }

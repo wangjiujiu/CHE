@@ -101,6 +101,10 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
     private String rightAnswer;
     private Button checkBtn;
 
+    private String scriptContent;
+    private TextView scriptTv;
+    private Button scriptBtn;
+
     @Inject
     HhiwDetailPresenter hsstDetailPresenter;
 
@@ -121,6 +125,9 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
         vipLl = (LinearLayout) parentView.findViewById(R.id.vip_only);
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -171,6 +178,19 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "答案："+htmlcontent));
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -331,6 +351,13 @@ public class HhiwDetailFragment extends CommonFragment implements HhiwDetailCont
             //答案
             if(hqDetail.getData().getAnswer()!=null){
                 rightAnswer = hqDetail.getData().getAnswer();
+            }
+
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
+                if(!StringUtils.isEmpty(scriptContent)){
+                    scriptBtn.setVisibility(View.VISIBLE);
+                }
             }
 
                 //音频文件

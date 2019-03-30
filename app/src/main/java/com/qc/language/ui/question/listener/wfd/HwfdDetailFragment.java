@@ -78,13 +78,17 @@ public class HwfdDetailFragment extends CommonFragment implements HwfdDetailCont
     private String rightAnswer;
     private Button checkBtn;
 
+    private String scriptContent;
+    private TextView scriptTv;
+    private Button scriptBtn;
+
     @Inject HwfdDetailPresenter hsstDetailPresenter;
 
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View parentView = inflater.inflate(R.layout.listener_sst_detail_frag, container, false);
+        View parentView = inflater.inflate(R.layout.listener_hwfd_detail_frag, container, false);
 
         //题目区
         typeTv = (TextView) parentView.findViewById(R.id.listener_type);
@@ -96,6 +100,9 @@ public class HwfdDetailFragment extends CommonFragment implements HwfdDetailCont
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
         myAnswerEt = (EditText) parentView.findViewById(R.id.listener_fill_answer);
         checkBtn = (Button) parentView.findViewById(R.id.listener_chcek_answer);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -146,6 +153,19 @@ public class HwfdDetailFragment extends CommonFragment implements HwfdDetailCont
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "答案："+htmlcontent));
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -296,6 +316,13 @@ public class HwfdDetailFragment extends CommonFragment implements HwfdDetailCont
             }
             if(hqDetail.getData().getAnswer()!=null){
                 rightAnswer = hqDetail.getData().getAnswer();
+            }
+
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
+                if(!StringUtils.isEmpty(scriptContent)){
+                    scriptBtn.setVisibility(View.VISIBLE);
+                }
             }
 
             if(hqDetail.getData().getFile()!=null&&!StringUtils.isEmpty(hqDetail.getData().getFile())){

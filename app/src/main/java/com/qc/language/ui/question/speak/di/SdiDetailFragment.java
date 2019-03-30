@@ -72,16 +72,16 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
     private TextView quesTv;
     private ImageView askTv;
     private TextView typeTv;
+
     //是否在播放题目
-//    private ImageView playTestBtn;
-//    private ProgressBar seekBar;  //进度条
-//    private VoiceItem voiceTestItem ;
-//    private String attachmentFile="";
-//    private Timer timer;
-//    private boolean isSeekBarChanging=false;//互斥变量，防止进度条与定时器冲突
-//    private int currentPosition=0;//当前音乐播放的进度
-//    SimpleDateFormat format;
-//    MediaPlayer testPlayer = new MediaPlayer();
+    private ImageView playTestBtn;
+    private ProgressBar seekBar;  //进度条
+    private VoiceItem voiceTestItem ;
+    private String attachmentFile="";
+    private Timer timer;
+    private boolean isSeekBarChanging=false;//互斥变量，防止进度条与定时器冲突
+    private int currentPosition=0;//当前音乐播放的进度
+    MediaPlayer testPlayer = new MediaPlayer();
 
     //vip区域
     private LinearLayout vipLl;
@@ -103,6 +103,8 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
     private Handler voiceHandler;
     private SoundMeter voiceSensor;
 
+    private LinearLayout answerVoiceLl;
+    private Button scriptBtn;
 
     @Inject
     DIDetailPresenter hsstDetailPresenter;
@@ -118,8 +120,8 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
         typeTv = (TextView) parentView.findViewById(R.id.listener_type);
         quesTv = (TextView) parentView.findViewById(R.id.listener_title);
         askTv = (ImageView) parentView.findViewById(R.id.di_picture);
-//        playTestBtn = (ImageView)parentView.findViewById(R.id.iv_play_bar_play);
-//        seekBar = (ProgressBar) parentView.findViewById(R.id.pb_play_bar);
+        playTestBtn = (ImageView)parentView.findViewById(R.id.iv_play_bar_play);
+        seekBar = (ProgressBar) parentView.findViewById(R.id.pb_play_bar);
 
         vipLl = (LinearLayout) parentView.findViewById(R.id.vip_only);
         answerRightTv = (TextView) parentView.findViewById(R.id.rs_content);
@@ -129,6 +131,9 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
         recordBtn = (ImageView) parentView.findViewById(R.id.rs_vip_recorded);
         playBtn = (ImageView) parentView.findViewById(R.id.rs_vip_player);
 
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+
+        answerVoiceLl = (LinearLayout) parentView.findViewById(R.id.answer_voice_file);
         return parentView;
     }
 
@@ -150,14 +155,14 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
             //判断是不是vip
             if(CurrentUser.getCurrentUser()!=null&&CurrentUser.getCurrentUser().hasLogin()){
                 userType = 1;
+                vipLl.setVisibility(View.VISIBLE);
                 answerRl.setVisibility(View.VISIBLE);
-
             }else{
 
                 userType = 0;
+                vipLl.setVisibility(View.GONE);
                 answerRl.setVisibility(View.GONE);
             }
-           // format = new SimpleDateFormat("mm:ss");
             voiceHandler = new Handler();
             voiceSensor = new SoundMeter();
 
@@ -179,60 +184,86 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
                     String htmlcontent = rightAnswer.replaceAll("font","androidfont");
                     answerRightTv.setText(HtmlUtils.getHtml(getCommonActivity(), answerRightTv, "原文："+htmlcontent));
                 }else{
-                    ToastUtils.showShort("暂缺答案");
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
 
-//        playTestBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(!isPlayPressing&&!isVoicePressing){
-//                if(voiceTestItem!=null){
-//                    if(!StringUtils.isEmpty(voiceTestItem.getPath())){
-//                        if(!testPlayer.isPlaying()){  //播放中
-//                                playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_pause);
-//                                    testPlayer.start();
-//                                    testPlayer.seekTo(currentPosition);
-//                                    //监听播放时回调函数
-//                                    timer = new Timer();
-//                                    timer.schedule(new TimerTask() {
-//                                        @Override
-//                                        public void run() {
-//                                            if (!isSeekBarChanging) {
-//                                                try{
-//                                                seekBar.setProgress(testPlayer.getCurrentPosition());
-//                                                }catch(Exception e){
-//                                                    e.printStackTrace();
-//                                                }
-//                                            }
-//                                        }
-//                                    }, 0, 50);
-//                    }else if(testPlayer.isPlaying()){
-//                            testPlayer.pause();
-//                            currentPosition = testPlayer.getCurrentPosition();
-//                            playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_play);
-//                    }
-//                    }else{
-//                        ToastUtils.showShort("没有音频文件！");
-//                    }
-//                }else{
-//                        ToastUtils.showShort("稍等，正在缓存音频！");
-//                    }
-//               }
-//            }
-//        });
-//
-//        testPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            @Override
-//            public void onCompletion(MediaPlayer mp) {
-//                //播放完毕回调
-//                playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_play);
-//                currentPosition = 0;
-//                testPlayer.reset();//停止播放
-//                initMediaPlayer();
-//            }
-//        });
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(attachmentFile)){
+                    answerVoiceLl.setVisibility(View.VISIBLE);
+                    String file = Constant.API_DOWNLOAD_FILE+ attachmentFile;
+                    final File voiceFile = new File(Environment.getExternalStorageDirectory().getPath() + "/QCYY/AudioRecord", attachmentFile);
+                    if (!voiceFile.exists()) {
+                        downloadMusic(file,attachmentFile);
+                    }else{
+                        //文件存在
+                        String path = voiceFile.getAbsolutePath();
+                        voiceTestItem = new VoiceItem();
+                        voiceTestItem.setPath(path);
+                        voiceTestItem.setUpdate(false);
+                        initMediaPlayer();
+                    }
+                }else{
+                    voiceTestItem = new VoiceItem();
+                    voiceTestItem.setPath("");
+                    initMediaPlayer();
+                    ToastUtils.showShort("暂缺音频答案");
+                }
+            }
+        });
+
+        playTestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isPlayPressing&&!isVoicePressing){
+                if(voiceTestItem!=null){
+                    if(!StringUtils.isEmpty(voiceTestItem.getPath())){
+                        if(!testPlayer.isPlaying()){  //播放中
+                                playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_pause);
+                                    testPlayer.start();
+                                    testPlayer.seekTo(currentPosition);
+                                    //监听播放时回调函数
+                                    timer = new Timer();
+                                    timer.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            if (!isSeekBarChanging) {
+                                                try{
+                                                seekBar.setProgress(testPlayer.getCurrentPosition());
+                                                }catch(Exception e){
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }, 0, 50);
+                    }else if(testPlayer.isPlaying()){
+                            testPlayer.pause();
+                            currentPosition = testPlayer.getCurrentPosition();
+                            playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_play);
+                    }
+                    }else{
+                        ToastUtils.showShort("没有音频文件！");
+                    }
+                }else{
+                        ToastUtils.showShort("稍等，正在缓存音频！");
+                    }
+               }
+            }
+        });
+
+        testPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                //播放完毕回调
+                playTestBtn.setImageResource(R.mipmap.ic_play_bar_btn_play);
+                currentPosition = 0;
+                testPlayer.reset();//停止播放
+                initMediaPlayer();
+            }
+        });
 
         recordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -319,79 +350,79 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
         }
     };
 
-//    private void initMediaPlayer() {
-//        try {
-//            testPlayer.setDataSource(voiceTestItem.getPath());//指定音频文件的路径
-//            testPlayer.prepare();//让mediaplayer进入准备状态
-//            testPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                public void onPrepared(MediaPlayer mp) {
-//                  seekBar.setMax(testPlayer.getDuration());
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void initMediaPlayer() {
+        try {
+            testPlayer.setDataSource(voiceTestItem.getPath());//指定音频文件的路径
+            testPlayer.prepare();//让mediaplayer进入准备状态
+            testPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                  seekBar.setMax(testPlayer.getDuration());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        isSeekBarChanging = false;
-//        if (testPlayer != null) {
-//            testPlayer.stop();
-//            try{
-//                testPlayer.release();
-//            }catch(Exception e){
-//                e.printStackTrace();
-//            }
-//            testPlayer = null;
-//        }
-//        if (timer != null) {
-//            timer.cancel();
-//            timer = null;
-//        }
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isSeekBarChanging = false;
+        if (testPlayer != null) {
+            testPlayer.stop();
+            try{
+                testPlayer.release();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            testPlayer = null;
+        }
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
 
 
-//    private void downloadMusic(final String url, final String fileName){
-//        OkHttpClient client = new OkHttpClient();
-//        Request request = new Request.Builder().url(url)
-//                .addHeader("Accept", "application/json")
-//                .get()//传参数、文件或者混合，改一下就行请求体就行
-//                .build();
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                ToastUtils.showLong("音频试题获取失败！");
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                try {
-//                    InputStream is = response.body().byteStream();
-//                    File file = FileHelper.createFile(fileName);
-//                    String path = file.getAbsolutePath();
-//                    FileOutputStream fos = new FileOutputStream(file);
-//                    BufferedInputStream bis = new BufferedInputStream(is);
-//                    byte[] buffer = new byte[1024];
-//                    int len;
-//                    while ((len = bis.read(buffer)) != -1) {
-//                        fos.write(buffer, 0, len);
-//                        fos.flush();
-//                    }
-//                    fos.close();
-//                    bis.close();
-//                    is.close();
-//                    voiceTestItem = new VoiceItem();
-//                    voiceTestItem.setPath(path);
-//                    voiceTestItem.setUpdate(false);
-//                    initMediaPlayer();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
+    private void downloadMusic(final String url, final String fileName){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url)
+                .addHeader("Accept", "application/json")
+                .get()//传参数、文件或者混合，改一下就行请求体就行
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastUtils.showLong("音频答案获取失败！");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    InputStream is = response.body().byteStream();
+                    File file = FileHelper.createFile(fileName);
+                    String path = file.getAbsolutePath();
+                    FileOutputStream fos = new FileOutputStream(file);
+                    BufferedInputStream bis = new BufferedInputStream(is);
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = bis.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
+                        fos.flush();
+                    }
+                    fos.close();
+                    bis.close();
+                    is.close();
+                    voiceTestItem = new VoiceItem();
+                    voiceTestItem.setPath(path);
+                    voiceTestItem.setUpdate(false);
+                    initMediaPlayer();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -425,6 +456,13 @@ public class SdiDetailFragment extends CommonFragment implements DIDetailContrac
                 Picasso.with( getCommonActivity() )
                         .load(url)
                         .into(askTv);
+            }
+
+            //音频文件
+            if(hqDetail.getData().getAanswer()!=null&&!StringUtils.isEmpty(hqDetail.getData().getAanswer())){
+                attachmentFile = hqDetail.getData().getAanswer();
+            }else{
+                attachmentFile = "";
             }
 
         }

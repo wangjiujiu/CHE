@@ -35,6 +35,26 @@ public class Question implements Comparable<Question> ,Parcelable {
 
     private String suggests;
 
+    private String aanswer;
+
+    private String origin;
+
+    public String getAanswer() {
+        return aanswer;
+    }
+
+    public void setAanswer(String aanswer) {
+        this.aanswer = aanswer;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
     //选项
     private List<OptionData> items;
 

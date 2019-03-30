@@ -77,6 +77,7 @@ public class RfibrwDetailFragment extends CommonFragment implements FibrDetailCo
     List<String> firstCheck;
     List<String> answer;
 
+
     @Inject
     FibrDetailPresenter hsstDetailPresenter;
 
@@ -159,12 +160,13 @@ public class RfibrwDetailFragment extends CommonFragment implements FibrDetailCo
                     sb.append(",");
                     }
                     answerRightTv.setVisibility(View.VISIBLE);
-                    answerRightTv.setText(sb.toString().substring(0,sb.length()-1));
+                    answerRightTv.setText("答案："+sb.toString().substring(0,sb.length()-1));
                    }else{
                     ToastUtils.showShort("暂缺答案");
                 }
             }
         });
+
 
         //弹窗
         checkAdapter.setOnItemClickListener(new FillAdapter.OnItemClickListener() {
@@ -217,7 +219,6 @@ public class RfibrwDetailFragment extends CommonFragment implements FibrDetailCo
                 String htmlcontent = hqDetail.getData().getContent().replaceAll("font", "androidfont");
                 askTv.setText(HtmlUtils.getHtml(getCommonActivity(), askTv, htmlcontent));
             }
-
 
            if(hqDetail.getData().getItems()!=null&&hqDetail.getData().getItems().size()>0){
                 for(int i=0;i<hqDetail.getData().getItems().size();i++){

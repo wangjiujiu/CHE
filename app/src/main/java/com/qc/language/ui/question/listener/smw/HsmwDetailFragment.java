@@ -100,6 +100,10 @@ public class HsmwDetailFragment extends CommonFragment implements HsmwDetailCont
     List<OptionData> dataList;
     private List<OptionData> haschooseitems=new ArrayList<>();
 
+    private TextView scriptTv;
+    private String scriptContent;
+    private Button scriptBtn;
+
     @Inject
     HsmwDetailPresenter hsstDetailPresenter;
 
@@ -127,6 +131,10 @@ public class HsmwDetailFragment extends CommonFragment implements HsmwDetailCont
         recyclerView.setNestedScrollingEnabled(false);
         adapter = new PickAdapter(getContext());
         recyclerView.setAdapter(adapter);
+
+        scriptBtn = parentView.findViewById(R.id.listener_chcek_script);
+        scriptBtn.setVisibility(View.VISIBLE);
+        scriptTv = parentView.findViewById(R.id.rs_script);
 
         return parentView;
     }
@@ -185,6 +193,19 @@ public class HsmwDetailFragment extends CommonFragment implements HsmwDetailCont
                     }
                 }else{
                     ToastUtils.showShort("暂缺答案");
+                }
+            }
+        });
+
+        scriptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtils.isEmpty(scriptContent)) {
+                    scriptTv.setVisibility(View.VISIBLE);
+                    String htmlcontent = scriptContent.replaceAll("font","androidfont");
+                    scriptTv.setText(HtmlUtils.getHtml(getCommonActivity(), scriptTv, "原文："+htmlcontent));
+                }else{
+                    ToastUtils.showShort("暂缺原文");
                 }
             }
         });
@@ -342,6 +363,10 @@ public class HsmwDetailFragment extends CommonFragment implements HsmwDetailCont
             //答案
             if(hqDetail.getData().getAnswer()!=null){
                 rightAnswer = hqDetail.getData().getAnswer();
+            }
+
+            if(hqDetail.getData().getOrigin()!=null){
+                scriptContent = hqDetail.getData().getOrigin();
             }
 
             //音频文件

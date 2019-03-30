@@ -117,6 +117,7 @@ public class RfibrDetailFragment extends CommonFragment implements FibrDetailCon
         content = new ArrayList<>();
         check = new ArrayList<>();
 
+
         return parentView;
     }
 
@@ -174,6 +175,7 @@ public class RfibrDetailFragment extends CommonFragment implements FibrDetailCon
             }
         });
 
+
         adviceAdapter.setOnItemClickListener(new WordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -227,6 +229,7 @@ public class RfibrDetailFragment extends CommonFragment implements FibrDetailCon
             if (hqDetail.getData().getAnswer() != null) {
                 rightAnswer = hqDetail.getData().getAnswer();
             }
+
 
            if(hqDetail.getData().getSuggests()!=null&&!StringUtils.isEmpty(hqDetail.getData().getSuggests())){
                 String[] str = hqDetail.getData().getSuggests().split(",");

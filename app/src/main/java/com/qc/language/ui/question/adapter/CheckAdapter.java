@@ -15,6 +15,8 @@ import com.qc.language.ui.question.data.OptionData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *选择adapter
@@ -27,7 +29,7 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
     private Context context;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
-
+    private String[] strs = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     public interface OnItemClickListener{
         void onItemClick(View view, int position);
@@ -61,6 +63,19 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
 
 
     //将数据与界面进行绑定的操作
+
+    //是否是数字
+    public boolean HasDigit(String content) {
+        boolean flag = false;
+        Pattern p = Pattern.compile(".*\\d+.*");
+        Matcher m = p.matcher(content);
+        if (m.matches()) {
+            flag = true;
+        }
+        return flag;
+    }
+
+
     @Override
     public void onBindViewHolder(final  ViewHolder viewHolder, final int position) {
         if (position < items.size() && items.get(position) != null) {
@@ -68,23 +83,47 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder>{
                 viewHolder.answer.setText(items.get(position).getContent());
             }
 
-            if(items.get(position).getSeq()!=null&& !StringUtils.isEmpty(items.get(position).getSeq())){
-                viewHolder.num.setText(items.get(position).getSeq());
+            int num = position+1;
+            String word = "不存在";
+            if(position<strs.length){
+                word = strs[position];
+                viewHolder.num.setText(strs[position]+"  ");
+            }else{
+                viewHolder.num.setText(num+"  ");
             }
 
-            if (haschooseitems.contains(items.get(position).getSeq())&&answer.contains(items.get(position).getSeq())) {
-                //选中是对的
-                viewHolder.pickIv.setImageResource(R.mipmap.ic_right);
-                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_right));
-            } else if(haschooseitems.contains(items.get(position).getSeq())&&!answer.contains(items.get(position).getSeq())){
-                //选中，但不是对的，选错了
-                viewHolder.pickIv.setImageResource(R.mipmap.ic_error);
-                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_error));
-            }else if(answer.contains(items.get(position).getSeq())){
-                viewHolder.pickIv.setImageResource(R.mipmap.ic_unpick);
-                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.picked_unpicked));
-            } else{
-                viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.white));
+            if(HasDigit(items.get(position).getSeq())&&HasDigit(answer)){
+                if (haschooseitems.contains(items.get(position).getSeq())&&answer.contains(items.get(position).getSeq())) {
+                    //选中是对的
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_right);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_right));
+                } else if(haschooseitems.contains(items.get(position).getSeq())&&!answer.contains(items.get(position).getSeq())){
+                    //选中，但不是对的，选错了
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_error);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_error));
+                }else if(answer.contains(items.get(position).getSeq())){
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_unpick);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.picked_unpicked));
+                } else{
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.white));
+                }
+            }else{
+                //seq肯定是1,2,3
+                String newstr = answer.toUpperCase();//使用toUpperCase()方法实现大写转换
+                if (haschooseitems.contains(items.get(position).getSeq())&&newstr.contains(word)) {
+                    //选中是对的
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_right);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_right));
+                } else if(haschooseitems.contains(items.get(position).getSeq())&&!newstr.contains(word)){
+                    //选中，但不是对的，选错了
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_error);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.pick_error));
+                }else if(newstr.contains(word)){
+                    viewHolder.pickIv.setImageResource(R.mipmap.ic_unpick);
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.picked_unpicked));
+                } else{
+                    viewHolder.rootview.setBackgroundColor(context.getResources().getColor(R.color.white));
+                }
             }
         }
         //  判断是否设置了监听器

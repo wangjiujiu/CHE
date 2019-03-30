@@ -290,16 +290,6 @@ public class QuestionContainerActivity extends CommonActivity {
             RrpDetailFragment rmcmDetailFragment = new RrpDetailFragment();
             rmcmDetailFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.activity_container, rmcmDetailFragment).addToBackStack(null).commit();
-        }else if(type.equals("R-RO")){
-            Bundle bundle = new Bundle();
-            bundle.putString("title", name);
-            bundle.putInt("role", role);
-            bundle.putString("type", type);
-            bundle.putInt("currentQues", currentQues);
-            bundle.putString("id", list.get(currentQues).getId());
-            RrpDetailFragment rmcmDetailFragment = new RrpDetailFragment();
-            rmcmDetailFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.activity_container, rmcmDetailFragment).addToBackStack(null).commit();
         }else if(type.equals("R-FIB-R")){
             Bundle bundle = new Bundle();
             bundle.putString("title", name);

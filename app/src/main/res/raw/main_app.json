@@ -1,6 +1,6 @@
 [
   {
-    "name": "听",
+    "name": "Listening",
     "data": [
       {
         "name": "SST",
@@ -53,7 +53,7 @@
     ]
   },
   {
-    "name": "说",
+    "name": "Speak",
     "data": [
       {
         "name": "RA",
@@ -88,7 +88,7 @@
     ]
   },
   {
-    "name": "读",
+    "name": "Read",
     "data": [
       {
         "name": "MC-S",
@@ -123,7 +123,7 @@
     ]
   },
   {
-    "name": "写",
+    "name": "Write",
     "data": [
       {
         "name": "SWT",

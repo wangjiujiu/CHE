@@ -38,10 +38,10 @@ public class VipFragment extends CommonFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.app_frag_main, container, false);
+        View root = inflater.inflate(R.layout.vip_frag_main, container, false);
 
         listView = (ListView) root.findViewById(R.id.app_frag_rv);
-        appGridAdapter = new AppGridListAdapter(getContext(),datalist);
+        appGridAdapter = new AppGridListAdapter(getContext(),datalist,1);
         listView.setAdapter(appGridAdapter);
 
         datalist = getAppGroup(getCommonActivity());

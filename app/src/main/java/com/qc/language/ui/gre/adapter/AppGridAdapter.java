@@ -21,11 +21,13 @@ import java.util.List;
 public class AppGridAdapter extends BaseAdapter {
 
     protected Context mContext;
+    private int type;
     private List<AppData> appData=new ArrayList<>();
 
-    public AppGridAdapter(Context context, List<AppData> mAppData) {
+    public AppGridAdapter(Context context, List<AppData> mAppData,int type) {
         mContext = context;
         this.appData  = mAppData;
+        this.type = type;
     }
 
     @Override
@@ -51,12 +53,19 @@ public class AppGridAdapter extends BaseAdapter {
             holder = new HotCityViewHolder();
             holder.name =  (TextView) view.findViewById(R.id.tv_item_homeapp);
             holder.imageView = (ImageView)view.findViewById(R.id.iv_item_homeapp);
+            holder.vipIv = (ImageView) view.findViewById(R.id.iv_item_vip);
             view.setTag(holder);
         }else{
             holder = (HotCityViewHolder) view.getTag();
         }
         if(appData.get(position).getName()!=null){
         holder.name.setText(appData.get(position).getName());
+        }
+
+        if(type==0){
+            holder.vipIv.setVisibility(View.GONE);
+        }else{
+            holder.vipIv.setVisibility(View.VISIBLE);
         }
         if(appData.get(position).getImageurl()!=null){
             int mipmapId = mContext.getResources().getIdentifier(appData.get(position).getImageurl(), "mipmap", MyApplication.getInstance().getPackageName());
@@ -70,6 +79,7 @@ public class AppGridAdapter extends BaseAdapter {
     public static class HotCityViewHolder{
         TextView name;
         ImageView imageView;
+        ImageView vipIv;
     }
 
     public void setData(List<AppData> appDataList){

@@ -152,13 +152,47 @@
                         android:text=""
                         android:visibility="gone"
                         />
-                    <Button
-                        android:id="@+id/listener_chcek_answer"
+                    <LinearLayout
+                        android:id="@+id/answer_voice_file"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="@dimen/item_top"
+                            android:textSize="@dimen/font_14"
+                            android:textColor="@color/colorBlackText"
+                            android:text="音频答案:"
+                            />
+                        <include layout="@layout/layout_answer_voice" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        style="@style/Button_CHECK"
-                        android:text="check"
                         android:layout_gravity="center"
-                        android:textColor="@android:color/white"/>
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        >
+                        <Button
+                            android:id="@+id/listener_chcek_answer"
+                            style="@style/Button_CHECK"
+                            android:text="@string/question_script"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="10dp"
+                            android:textColor="@android:color/white"/>
+                        <Button
+                            android:id="@+id/listener_chcek_script"
+                            style="@style/Button_CHECK"
+                            android:text="@string/question_audio"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@android:color/white"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

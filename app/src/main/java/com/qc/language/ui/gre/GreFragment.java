@@ -44,7 +44,7 @@ public class GreFragment extends CommonFragment {
         View root = inflater.inflate(R.layout.app_frag_main, container, false);
 
         listView = (ListView) root.findViewById(R.id.app_frag_rv);
-        appGridAdapter = new AppGridListAdapter(getContext(),datalist);
+        appGridAdapter = new AppGridListAdapter(getContext(),datalist,0);
         listView.setAdapter(appGridAdapter);
 
         datalist = getAppGroup(getCommonActivity());

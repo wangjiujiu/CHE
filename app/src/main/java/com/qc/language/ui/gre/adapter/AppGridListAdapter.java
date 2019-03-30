@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qc.language.R;
@@ -22,13 +23,15 @@ public class AppGridListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<AppGroupData> items;
     private OnAppClickListener onAppClickListener;
+    private int type;
 
     private int currentGroup;
 
-    public AppGridListAdapter(Context mContext, List<AppGroupData> data) {
+    public AppGridListAdapter(Context mContext, List<AppGroupData> data,int type) {
         this.mContext =  mContext;
         this.items = data;
         this.inflater = LayoutInflater.from(mContext);
+        this.type = type;
     }
 
 
@@ -69,7 +72,7 @@ public class AppGridListAdapter extends BaseAdapter {
              if(items.get(position).getName()!=null){
                  holder.title.setText(items.get(position).getName());
              }
-            final AppGridAdapter appGridAdapter = new AppGridAdapter(mContext, new ArrayList<AppData>());
+            final AppGridAdapter appGridAdapter = new AppGridAdapter(mContext, new ArrayList<AppData>(),type);
              holder.wrapHeightGridView.setAdapter(appGridAdapter);
 
                 if (items.get(position).getData()!= null && items.get(position).getData().size() > 0) {

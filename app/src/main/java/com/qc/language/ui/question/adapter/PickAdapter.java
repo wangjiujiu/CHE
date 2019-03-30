@@ -25,7 +25,7 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder>{
     private Context context;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
-
+    private String[] strs = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     public interface OnItemClickListener{
         void onItemClick(View view, int position);
@@ -67,6 +67,13 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder>{
 
             if(items.get(position).getSeq()!=null&&!StringUtils.isEmpty(items.get(position).getSeq())){
                     viewHolder.num.setText(items.get(position).getSeq());
+            }
+
+            int num = position+1;
+            if(position<strs.length){
+                viewHolder.num.setText(strs[position]+"  ");
+            }else{
+                viewHolder.num.setText(num+"  ");
             }
 
             if (haschooseitems.contains(items.get(position).getSeq())) {

@@ -391,7 +391,7 @@ public class SraDetailFragment extends CommonFragment implements RADetailContrac
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                ToastUtils.showLong("音频试题获取失败！");
+                ToastUtils.showLong("音频答案获取失败！");
             }
 
             @Override
